@@ -41,22 +41,6 @@ export default function App() {
         dy: 0,
       };
 
-      const bullets = {
-        speed: 5,
-        array: [],
-      };
-
-      // check for collision between two objects using axis-aligned bounding box (AABB)
-      // @see https://developer.mozilla.org/en-US/docs/Games/Techniques/2D_collision_detection
-      function collides(obj1, obj2) {
-        return (
-          obj1.x < obj2.x + obj2.width &&
-          obj1.x + obj1.width > obj2.x &&
-          obj1.y < obj2.y + obj2.height &&
-          obj1.y + obj1.height > obj2.y
-        );
-      }
-
       // game loop
       function loop() {
         requestAnimationFrame(loop);
@@ -115,33 +99,9 @@ export default function App() {
         if (e.which === 87) {
           leftPlayer.dy = -playerSpeed;
         }
-        // a key
+        // s key
         else if (e.which === 83) {
           leftPlayer.dy = playerSpeed;
-        }
-
-        // shooting
-        // left arrow key
-        if (e.which === 37 && rightPlayer.cooldown === 0) {
-          bullets.array.push({
-            x: rightPlayer.x - 10,
-            y: rightPlayer.y + 20,
-            width: 10,
-            height: 5,
-            dx: -bullets.speed,
-          });
-          rightPlayer.cooldown = 25;
-        }
-        // d key
-        if (e.which === 68 && leftPlayer.cooldown === 0) {
-          bullets.array.push({
-            x: leftPlayer.x + 15,
-            y: leftPlayer.y + 20,
-            width: 10,
-            height: 5,
-            dx: bullets.speed,
-          });
-          leftPlayer.cooldown = 25;
         }
       });
       // listen to keyboard events to stop the player if key is released
