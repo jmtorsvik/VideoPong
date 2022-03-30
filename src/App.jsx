@@ -15,7 +15,7 @@ export default function App() {
 
       const leftPlayer = {
         // start in the middle of the game on the left side
-        x: grid * 2,
+        x: 0,
         y: canvas.height / 2 - playerHeight / 2,
         width: grid,
         height: playerHeight,
@@ -29,7 +29,7 @@ export default function App() {
 
       const rightPlayer = {
         // start in the middle of the game on the right side
-        x: canvas.width - grid * 3,
+        x: canvas.width - grid,
         y: canvas.height / 2 - playerHeight / 2,
         width: grid,
         height: playerHeight,
