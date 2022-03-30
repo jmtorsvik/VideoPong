@@ -8,10 +8,10 @@ export default function App() {
             const canvas = ref.current;
             const context = canvas.getContext("2d");
             const grid = 15;
-            const playerHeight = grid * 3; // 45
+            const playerHeight = grid * 5; // 45
             const maxPlayerY = canvas.height - grid - playerHeight;
 
-            var playerSpeed = 4;
+            const playerSpeed = 5;
 
             const leftPlayer = {
                 // start in the middle of the game on the left side
@@ -19,10 +19,6 @@ export default function App() {
                 y: canvas.height / 2 - playerHeight / 2,
                 width: grid,
                 height: playerHeight,
-
-                // shooting cooldown
-                cooldown: 0,
-
                 // player velocity
                 dy: 0,
             };
@@ -33,9 +29,6 @@ export default function App() {
                 y: canvas.height / 2 - playerHeight / 2,
                 width: grid,
                 height: playerHeight,
-
-                // shooting cooldown
-                cooldown: 0,
 
                 // player velocity
                 dy: 0,
@@ -63,7 +56,7 @@ export default function App() {
                     rightPlayer.y = maxPlayerY;
                 }
 
-                // draw paddles
+                // draw player bars
                 context.fillStyle = "black";
                 context.fillRect(
                     leftPlayer.x,
@@ -86,33 +79,22 @@ export default function App() {
 
             // listen to keyboard events to move the players
             document.addEventListener("keydown", function (e) {
-                // up arrow key
-                if (e.which === 38) {
+                if (e.key === "ArrowUp") {
                     rightPlayer.dy = -playerSpeed;
                 }
-                // down arrow key
-                else if (e.which === 40) {
+                else if (e.key === "ArrowDown") {
                     rightPlayer.dy = playerSpeed;
                 }
-
-                // w key
-                if (e.which === 87) {
-                    leftPlayer.dy = -playerSpeed;
-                }
-                // s key
-                else if (e.which === 83) {
-                    leftPlayer.dy = playerSpeed;
-                }
             });
+
             // listen to keyboard events to stop the player if key is released
             document.addEventListener("keyup", function (e) {
                 if ((e.key === "ArrowUp" && rightPlayer.dy < 0) || (e.key === "ArrowDown" && rightPlayer.dy > 0)) {
                     rightPlayer.dy = 0;
-
-
                 }
 
             });
+
             // start the game
             requestAnimationFrame(loop);
         }
