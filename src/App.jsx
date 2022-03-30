@@ -1,5 +1,6 @@
 import { useEffect, useRef } from "react";
 
+const fps = 30;
 export default function App() {
   const ref = useRef();
 
@@ -18,16 +19,15 @@ export default function App() {
     y: 0,
   };
 
-  function draw(time) {
-    if (ref.current) {
+  function draw() {
+    setTimeout(function () {
       requestAnimationFrame(draw);
       const ctx = ref.current.getContext("2d");
       ctx.clearRect(0, 0, ref.current.width, ref.current.height);
       ctx.beginPath();
       ctx.rect(0, playerBar.y, 10, 100);
       ctx.stroke();
-      return;
-    }
+    }, 1000 / fps);
   }
 
   useEffect(() => {
@@ -35,12 +35,18 @@ export default function App() {
       for (let i = 0; i < 10; i++) {
         if (e.key === "ArrowUp") {
           playerBar.y += 1;
+          setTimeout(() => {
+            playerBar.y += 1;
+            setTimeout(() => {
+              playerBar.y += 1;
+            }, 1000 / fps / 2);
+          }, 3 / fps / 2);
         } else if (e.key === "ArrowDown") {
           playerBar.y -= 1;
         }
       }
     };
-    requestAnimationFrame(draw); // start animation
+    draw();
   }, []);
 
   return (
@@ -49,8 +55,8 @@ export default function App() {
       <canvas
         ref={ref}
         id="myCanvas"
-        width="200"
-        height="200"
+        width="1000"
+        height="1000"
         style={{ border: "1px solid black" }}
       ></canvas>
     </div>
