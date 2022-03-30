@@ -15,7 +15,7 @@ export default function App() {
 
             const leftPlayer = {
                 // start in the middle of the game on the left side
-                x: grid * 2,
+                x: 0,
                 y: canvas.height / 2 - playerHeight / 2,
                 width: grid,
                 height: playerHeight,
@@ -29,7 +29,7 @@ export default function App() {
 
             const rightPlayer = {
                 // start in the middle of the game on the right side
-                x: canvas.width - grid * 3,
+                x: canvas.width - grid,
                 y: canvas.height / 2 - playerHeight / 2,
                 width: grid,
                 height: playerHeight,
@@ -40,22 +40,6 @@ export default function App() {
                 // player velocity
                 dy: 0,
             };
-
-            const bullets = {
-                speed: 5,
-                array: [],
-            };
-
-            // check for collision between two objects using axis-aligned bounding box (AABB)
-            // @see https://developer.mozilla.org/en-US/docs/Games/Techniques/2D_collision_detection
-            function collides(obj1, obj2) {
-                return (
-                    obj1.x < obj2.x + obj2.width &&
-                    obj1.x + obj1.width > obj2.x &&
-                    obj1.y < obj2.y + obj2.height &&
-                    obj1.y + obj1.height > obj2.y
-                );
-            }
 
             // game loop
             function loop() {
@@ -115,52 +99,20 @@ export default function App() {
                 if (e.which === 87) {
                     leftPlayer.dy = -playerSpeed;
                 }
-                // a key
+                // s key
                 else if (e.which === 83) {
                     leftPlayer.dy = playerSpeed;
-                }
-
-                // shooting
-                // left arrow key
-                if (e.which === 37 && rightPlayer.cooldown === 0) {
-                    bullets.array.push({
-                        x: rightPlayer.x - 10,
-                        y: rightPlayer.y + 20,
-                        width: 10,
-                        height: 5,
-                        dx: -bullets.speed,
-                    });
-                    rightPlayer.cooldown = 25;
-                }
-                // d key
-                if (e.which === 68 && leftPlayer.cooldown === 0) {
-                    bullets.array.push({
-                        x: leftPlayer.x + 15,
-                        y: leftPlayer.y + 20,
-                        width: 10,
-                        height: 5,
-                        dx: bullets.speed,
-                    });
-                    leftPlayer.cooldown = 25;
                 }
             });
             // listen to keyboard events to stop the player if key is released
             document.addEventListener("keyup", function (e) {
                 if ((e.key === "ArrowUp" && rightPlayer.dy < 0) || (e.key === "ArrowDown" && rightPlayer.dy > 0)) {
                     rightPlayer.dy = 0;
+
+
                 }
 
-                /*
-                if (e.which === 38 || e.which === 40) {
-                    rightPlayer.dy = 0;
-                }
-
-                if (e.which === 83 || e.which === 87) {
-                    leftPlayer.dy = 0;
-                }
-                */
             });
-
             // start the game
             requestAnimationFrame(loop);
         }
