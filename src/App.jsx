@@ -1,6 +1,9 @@
 import { useEffect, useRef } from "react";
+import "./App.css";
+let secondsPassed = 0;
+let oldTimeStamp = 0;
+let movingSpeed = 50;
 
-const fps = 30;
 export default function App() {
   const ref = useRef();
 
@@ -19,44 +22,49 @@ export default function App() {
     y: 0,
   };
 
+  function update(secondsPassed) {
+    playerBar.X += movingSpeed * secondsPassed;
+    playerBar.Y += movingSpeed * secondsPassed;
+  }
+
   function draw() {
-    setTimeout(function () {
-      requestAnimationFrame(draw);
-      const ctx = ref.current.getContext("2d");
-      ctx.clearRect(0, 0, ref.current.width, ref.current.height);
-      ctx.beginPath();
-      ctx.rect(0, playerBar.y, 10, 100);
-      ctx.stroke();
-    }, 1000 / fps);
+    const ctx = ref.current.getContext("2d");
+    ctx.clearRect(0, 0, ref.current.width, ref.current.height);
+    ctx.beginPath();
+    ctx.rect(0, playerBar.y, 10, 100);
+    ctx.stroke();
+  }
+
+  function gameLoop(timeStamp) {
+    secondsPassed = (timeStamp - oldTimeStamp) / 1000;
+    oldTimeStamp = timeStamp;
+    update(secondsPassed);
+    draw();
+    window.requestAnimationFrame(gameLoop);
   }
 
   useEffect(() => {
+    if (ref.current) {
+      ref.current.width = window.innerWidth;
+      ref.current.height = window.innerHeight;
+    }
     document.onkeydown = (e) => {
       for (let i = 0; i < 10; i++) {
         if (e.key === "ArrowUp") {
           playerBar.y += 1;
-          setTimeout(() => {
-            playerBar.y += 1;
-            setTimeout(() => {
-              playerBar.y += 1;
-            }, 1000 / fps / 2);
-          }, 3 / fps / 2);
         } else if (e.key === "ArrowDown") {
           playerBar.y -= 1;
         }
       }
     };
-    draw();
+    gameLoop();
   }, []);
 
   return (
     <div>
-      <h1>Gutta pong</h1>
       <canvas
         ref={ref}
         id="myCanvas"
-        width="1000"
-        height="1000"
         style={{ border: "1px solid black" }}
       ></canvas>
     </div>
