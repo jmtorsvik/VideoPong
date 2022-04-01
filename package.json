@@ -3,12 +3,17 @@
   "version": "0.1.0",
   "private": true,
   "dependencies": {
+    "@andyet/simplewebrtc": "^1.30.5",
     "@testing-library/jest-dom": "^5.16.3",
     "@testing-library/react": "^12.1.4",
     "@testing-library/user-event": "^13.5.0",
-    "react": "^18.0.0",
-    "react-dom": "^18.0.0",
-    "react-scripts": "5.0.0",
+    "@types/react-redux": "^7.1.23",
+    "history": "^5.3.0",
+    "react": "^16.0.0",
+    "react-dom": "^16.0.0",
+    "react-redux": "^7.2.7",
+    "react-router-dom": "^6.3.0",
+    "react-scripts": "4.0.0",
     "web-vitals": "^2.1.4"
   },
   "scripts": {
