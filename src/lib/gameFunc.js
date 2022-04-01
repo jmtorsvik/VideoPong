@@ -1,7 +1,5 @@
 import { ball, leftPlayer, rightPlayer, grid, maxY, playerSpeed } from "./gameVar";
 
-
-
 export function move() {
     // move players by their velocity
     leftPlayer.y += leftPlayer.dy;
