@@ -1,4 +1,4 @@
-import { ball, leftPlayer, rightPlayer } from "./variables";
+import { ball, leftPlayer, rightPlayer } from "./gameVar";
 
 export function draw() {
     
