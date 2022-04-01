@@ -7,15 +7,11 @@ export default function App() {
     const ref = useRef();
 
     useEffect(() => {
-        console.log(connectionStatus);
-    }, []);
-
-    useEffect(() => {
         // start game if canvas is mounted
-        console.log(ref.current);
+        console.log("YOLO");
         if (ref.current) {
             console.log("Hey");
-            startGame(ref);
+            //startGame(ref);
         }
     }, []);
 
