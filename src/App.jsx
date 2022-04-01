@@ -1,16 +1,15 @@
 import { useEffect, useRef } from "react";
 import "./App.css";
 
-import mqtt from "mqtt";
+import { useMqttState } from "mqtt-react-hooks";
 
 export default function App() {
   const ref = useRef();
 
+  const { connectionStatus } = useMqttState();
+
   useEffect(() => {
-    const client = mqtt.connect("mqtt://mqtt.item.ntnu.no");
-    client.on("connect", () => {
-      console.log("CONNTECTED");
-    });
+    console.log(connectionStatus);
   }, []);
 
   useEffect(() => {
