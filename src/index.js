@@ -6,7 +6,20 @@ import { Connector } from "mqtt-react-hooks";
 
 ReactDOM.render(
   <React.StrictMode>
-    <Connector brokerUrl="mqtt://mqtt.item.ntnu.no">
+    <Connector
+      brokerUrl={"ws://test.mosquitto.org:8080"}
+      servers={[
+        {
+          host: "mqtt.item.ntnu.no",
+          port: 1883,
+          protocol: "mqtt",
+        },
+      ]}
+      options={{
+        protocol: "mqtt",
+        keepalive: 120,
+      }}
+    >
       <App />
     </Connector>
   </React.StrictMode>,
