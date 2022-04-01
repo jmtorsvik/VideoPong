@@ -6,7 +6,7 @@ import { Connector } from "mqtt-react-hooks";
 
 ReactDOM.render(
   <React.StrictMode>
-    <Connector brokerUrl="wss://test.mosquitto.org:1884">
+    <Connector brokerUrl="mqtt://mqtt.item.ntnu.no">
       <App />
     </Connector>
   </React.StrictMode>,
