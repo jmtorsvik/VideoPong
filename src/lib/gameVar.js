@@ -1,10 +1,11 @@
-export const canvas = ref.current;
-export const context = canvas.getContext("2d");
+import { canvas } from "./game";
+
 export const grid = 15;
 export const minX = 0;
 export const maxX = canvas.width;
 export const minY = grid;
 export const maxY = canvas.height - grid;
+export const playerSpeed = 5;
 
 const ballSize = 10;
 
