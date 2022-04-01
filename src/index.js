@@ -1,7 +1,10 @@
 import React from "react";
 import ReactDOM from "react-dom";
 import App from "./App";
+import Video from "./component/Video";
+import Register from "./component/Register"
 import reportWebVitals from "./reportWebVitals";
+<<<<<<< HEAD
 import { Connector } from "mqtt-react-hooks";
 
 ReactDOM.render(
@@ -23,6 +26,18 @@ ReactDOM.render(
       <App />
     </Connector>
   </React.StrictMode>,
+=======
+import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
+
+ReactDOM.render(
+    <Router>
+        <Routes>
+            <Route path="/" element={<Register />} />
+            <Route path="/game" element={<App />} />
+            <Route path="/video" element={<Video />} />
+        </Routes>
+    </Router>,
+>>>>>>> origin/video
   document.getElementById("root")
 );
 
