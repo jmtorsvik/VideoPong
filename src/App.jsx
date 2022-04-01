@@ -1,14 +1,10 @@
 import { useEffect, useRef } from "react";
 import "./App.css";
 
-import { useMqttState } from "mqtt-react-hooks";
-
 import { startGame } from "./lib/game";
 
 export default function App() {
     const ref = useRef();
-
-    const { connectionStatus } = useMqttState();
 
     useEffect(() => {
         console.log(connectionStatus);
