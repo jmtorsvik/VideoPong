@@ -18,7 +18,7 @@ export function move() {
         rightPlayer.y = maxY - rightPlayer.height;
     }
 
-    //move ball by its velocity and vector
+    //move ball by its vector
     ball.x += ball.dx;
     ball.y += ball.dy;
 }
