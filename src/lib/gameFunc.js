@@ -1,6 +1,6 @@
-import { ball, leftPlayer, rightPlayer, grid, maxY, playerSpeed } from "./gameVar";
+import { ball, leftPlayer, rightPlayer, grid, maxX, maxY, playerSpeed } from "./gameVar";
 
-export function move() {
+export function move(canvas) {
     // move players by their velocity
     leftPlayer.y += leftPlayer.dy;
     rightPlayer.y += rightPlayer.dy;
@@ -18,10 +18,46 @@ export function move() {
         rightPlayer.y = maxY - rightPlayer.height;
     }
 
-    //move ball by its vector
+    // move ball by its vector
     ball.x += ball.dx;
     ball.y += ball.dy;
+
+    // deflect ball off walls
+    if (ball.y < grid) {
+        ball.y = grid;
+        ball.dy = -ball.dy;
+    } else if (ball.y > maxY - ball.size) {
+        ball.y = maxY - ball.size;
+        ball.dy = -ball.dy;
+    }
+
+    // deflect ball off right player or end game
+    if (ball.x > maxX - ball.size) {
+        if (ball.y > rightPlayer.y && ball.y < rightPlayer.y + rightPlayer.height) {
+            ball.x = maxX - ball.size;
+            ball.dx = -ball.dx;
+        } else {
+            alert("GOAL!");
+            resetBall(canvas);
+        }
+    }
+
+
+
+    // stop ball if it hits opponent side 
+    /*if (ball.x < leftPlayer.width) {
+        ball.x = leftPlayer.width;
+        ball.dx = ball.dy = 0;
+    }*/
+    // TEMP: deflect ball off opponent side
+    if (ball.x < leftPlayer.width) {
+        ball.x = leftPlayer.width;
+        ball.dx = -ball.dx;
+    }
+
 }
+
+
 
 export function draw(canvas) {
     // create context from canvas
@@ -72,5 +108,12 @@ export function addKeyListeners() {
             rightPlayer.dy = 0;
         }
     });
+}
+
+export function resetBall(canvas) {
+    ball.x = (canvas.width - ball.size) / 2;
+    ball.y = (canvas.height - ball.size) / 2;
+    ball.dx = 4;
+    ball.dy = 4;
 }
 

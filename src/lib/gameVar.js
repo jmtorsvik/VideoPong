@@ -1,8 +1,9 @@
 export const canvasWidth = 750;
-export const canvasHeight = 585; 
+export const canvasHeight = 585;
 export const grid = 15;
+export const maxX = canvasWidth - grid;
 export const maxY = canvasHeight - grid;
-export const playerSpeed = 5;
+export const playerSpeed = 7;
 
 const ballSize = 10;
 
