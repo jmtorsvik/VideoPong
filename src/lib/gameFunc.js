@@ -24,6 +24,7 @@ export function move() {
 }
 
 export function draw(canvas) {
+    // create context from canvas
     const context = canvas.getContext("2d");
 
     // clear canvas
