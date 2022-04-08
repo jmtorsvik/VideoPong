@@ -1,8 +1,6 @@
 export const canvasWidth = 750; // or: document.getElementById('root').clientWidth/2;
 export const canvasHeight = (canvasWidth/100)*78
 export const grid = canvasWidth/50; // used as a granual size unit
-export const maxX = canvasWidth - grid;
-export const maxY = canvasHeight - grid;
 export const playerSpeed = (grid/100)*45
 export const scoreSize = grid*10;
 export const colors = ["purple", "white", "fuchsia"]; // [background, scores, balls/players/walls]

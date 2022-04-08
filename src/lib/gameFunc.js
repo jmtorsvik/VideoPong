@@ -1,6 +1,10 @@
-import { ball, leftPlayer, rightPlayer, grid, maxX, maxY, playerSpeed, scoreSize, colors } from "./gameVar";
+import { ball, leftPlayer, rightPlayer, grid, playerSpeed, scoreSize, colors } from "./gameVar";
 
 export function move(canvas) {
+    // set boundaries
+    const maxX = canvas.width - rightPlayer.width;
+    const maxY = canvas.height - grid;
+
     // move players by their velocity
     leftPlayer.y += leftPlayer.dy;
     rightPlayer.y += rightPlayer.dy;
@@ -63,21 +67,21 @@ export function draw(canvas) {
     // create context from canvas
     const context = canvas.getContext("2d");
 
-    // clear canvas
+    // clear canvas and draw background
     context.clearRect(0, 0, canvas.width, canvas.height);
-    context.fillStyle = colors[0];
+    context.fillStyle = colors[0]; // background color
     context.fillRect(0, 0, canvas.width, canvas.height);
 
     //draw scores
-    context.fillStyle = colors[1];
+    context.fillStyle = colors[1]; // score color
     context.font = scoreSize + "px Arial";
     context.textAlign = "center";
-    context.fillText(":", canvas.width/2, canvas.height/2 + grid*3);
-    context.fillText(leftPlayer.score, canvas.width/2 - (scoreSize/3)*2, canvas.height/2 + grid*3);
-    context.fillText(rightPlayer.score, canvas.width/2 + (scoreSize/3)*2, canvas.height/2 + grid*3);
+    context.fillText(":", canvas.width / 2, canvas.height / 2 + grid * 3);
+    context.fillText(leftPlayer.score, canvas.width / 2 - (scoreSize / 3) * 2, canvas.height / 2 + grid * 3);
+    context.fillText(rightPlayer.score, canvas.width / 2 + (scoreSize / 3) * 2, canvas.height / 2 + grid * 3);
 
     // draw walls
-    context.fillStyle = colors[2];
+    context.fillStyle = colors[2]; // ball, player and wall color
     context.fillRect(0, 0, canvas.width, grid);
     context.fillRect(0, canvas.height - grid, canvas.width, canvas.height);
 
@@ -125,6 +129,7 @@ export function addKeyListeners() {
 export function resetBall(canvas) {
     ball.x = (canvas.width - ball.size) / 2;
     ball.y = (canvas.height - ball.size) / 2;
+    // TO-DO: RANDOMIZE BALL START
     ball.dx = 4;
     ball.dy = 4;
 }
