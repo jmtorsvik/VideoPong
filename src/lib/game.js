@@ -1,31 +1,22 @@
-import { loop } from "./gameFunc";
-import { rightPlayer, playerSpeed } from "./gameVar";
+import { move, draw, addKeyListeners, resetBall } from "./gameFunc";
 
-export let canvas;
-export let context;
+export function startGame(canvas) {
+    function loop() {
+        // loop
+        requestAnimationFrame(loop);
 
-export function startGame(ref) {
-    canvas = ref.current;
-    context = canvas.getContext("2D");
+        // move elements
+        move(canvas);
+
+        // draw elements
+        draw(canvas);
+    }
+
+    // add listeners on keys
+    addKeyListeners();
     
-    // listen to keyboard events to move the players
-    document.addEventListener("keydown", function (e) {
-        if (e.key === "ArrowUp") {
-            rightPlayer.dy = -playerSpeed;
-        } else if (e.key === "ArrowDown") {
-            rightPlayer.dy = playerSpeed;
-        }
-    });
-
-    // listen to keyboard events to stop the player if key is released
-    document.addEventListener("keyup", function (e) {
-        if (
-            (e.key === "ArrowUp" && rightPlayer.dy < 0) ||
-            (e.key === "ArrowDown" && rightPlayer.dy > 0)
-        ) {
-            rightPlayer.dy = 0;
-        }
-    });
+    // set initial ball speed
+    resetBall(canvas);
 
     // start the game
     requestAnimationFrame(loop);

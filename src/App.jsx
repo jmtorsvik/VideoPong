@@ -2,22 +2,24 @@ import { useEffect, useRef } from "react";
 import "./App.css";
 
 import { startGame } from "./lib/game";
+import { canvasWidth, canvasHeight } from "./lib/gameVar";
 
 export default function App() {
     const ref = useRef();
 
     useEffect(() => {
-        // start game if canvas is mounted
-        console.log("YOLO");
         if (ref.current) {
-            console.log("Hey");
-            //startGame(ref);
+            // create canvas variable
+            const canvas = ref.current;
+
+            // start game
+            startGame(canvas);
         }
     }, []);
 
     return (
         <div>
-            <canvas width="750" height="585" id="game" ref={ref}></canvas>
+            <canvas width={canvasWidth} height={canvasHeight} id="game" ref={ref}></canvas>
         </div>
     );
 }
