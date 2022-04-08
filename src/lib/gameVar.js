@@ -5,7 +5,7 @@ export const maxX = canvasWidth - grid;
 export const maxY = canvasHeight - grid;
 export const playerSpeed = (grid/100)*45
 export const scoreSize = grid*10;
-export const colors = ["purple", "white", "fuchsia"];
+export const colors = ["purple", "white", "fuchsia"]; // [background, scores, balls/players/walls]
 
 const ballSize = grid;
 
