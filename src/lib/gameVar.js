@@ -1,11 +1,13 @@
-export const canvasWidth = 750;
-export const canvasHeight = 585;
-export const grid = 15;
+export const canvasWidth = 750; // or: document.getElementById('root').clientWidth/2;
+export const canvasHeight = (canvasWidth/100)*78
+export const grid = canvasWidth/50;
 export const maxX = canvasWidth - grid;
 export const maxY = canvasHeight - grid;
-export const playerSpeed = 7;
+export const playerSpeed = (grid/100)*45
+export const scoreSize = grid*10;
+export const colors = ["purple", "white", "fuchsia"];
 
-const ballSize = 10;
+const ballSize = grid;
 
 export let ball = {
     x: (canvasWidth - ballSize) / 2,
@@ -16,7 +18,7 @@ export let ball = {
 }
 
 const playerWidth = grid;
-const playerHeight = grid * 5;
+const playerHeight = grid * 7;
 
 export let leftPlayer = {
     x: 0,
@@ -24,6 +26,7 @@ export let leftPlayer = {
     width: playerWidth,
     height: playerHeight,
     dy: 0,
+    score: 0
 }
 
 export let rightPlayer = {
@@ -32,4 +35,5 @@ export let rightPlayer = {
     width: playerWidth,
     height: playerHeight,
     dy: 0,
+    score: 0
 }

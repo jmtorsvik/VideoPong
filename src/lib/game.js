@@ -12,7 +12,7 @@ export function startGame(canvas) {
         draw(canvas);
     }
 
-    // add listeners on keys
+    // add listeners on relevant keys
     addKeyListeners();
     
     // set initial ball speed

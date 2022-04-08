@@ -1,4 +1,4 @@
-import { ball, leftPlayer, rightPlayer, grid, maxX, maxY, playerSpeed } from "./gameVar";
+import { ball, leftPlayer, rightPlayer, grid, maxX, maxY, playerSpeed, scoreSize, colors } from "./gameVar";
 
 export function move(canvas) {
     // move players by their velocity
@@ -36,13 +36,13 @@ export function move(canvas) {
         if (ball.y > rightPlayer.y && ball.y < rightPlayer.y + rightPlayer.height) {
             ball.x = maxX - ball.size;
             ball.dx = -ball.dx;
+            // TO-DO: SEND MQTT MESSAGE ABOUT BALL HIT!
         } else {
-            alert("GOAL!");
+            leftPlayer.score++;
             resetBall(canvas);
+            // TO-DO: SEND MQTT MESSAGE ABOUT GOAL!
         }
     }
-
-
 
     // stop ball if it hits opponent side 
     /*if (ball.x < leftPlayer.width) {
@@ -65,7 +65,19 @@ export function draw(canvas) {
 
     // clear canvas
     context.clearRect(0, 0, canvas.width, canvas.height);
+    context.fillStyle = colors[0];
+    context.fillRect(0, 0, canvas.width, canvas.height);
+
+    //draw scores
+    context.fillStyle = colors[1];
+    context.font = scoreSize + "px Arial";
+    context.textAlign = "center";
+    context.fillText(":", canvas.width/2, canvas.height/2 + grid*3);
+    context.fillText(leftPlayer.score, canvas.width/2 - (scoreSize/3)*2, canvas.height/2 + grid*3);
+    context.fillText(rightPlayer.score, canvas.width/2 + (scoreSize/3)*2, canvas.height/2 + grid*3);
+
     // draw walls
+    context.fillStyle = colors[2];
     context.fillRect(0, 0, canvas.width, grid);
     context.fillRect(0, canvas.height - grid, canvas.width, canvas.height);
 
