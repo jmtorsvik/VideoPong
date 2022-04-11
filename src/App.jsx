@@ -15,6 +15,7 @@ export default function App() {
     client.subscribe("/" + GLOBAL_IDENTIFIER);
   }, [connectionStatus]);
 
+
   useEffect(() => {
     if (ref.current) {
       const canvas = ref.current;

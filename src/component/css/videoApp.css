@@ -1,0 +1,90 @@
+.horizontal {
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-content: center;
+}
+
+.vertical {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-content: center;
+}
+
+.video-main {
+  width: 150%;
+  height: 100vh;
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-content: center;
+}
+.control-full {
+  width: 50%;
+  height: 100vh;
+  background-color: yellow;
+}
+
+.grid-container-full {
+  display: inline-grid;
+  grid-template-columns: auto auto auto;
+  margin: 10px;
+  width: 90%;
+  height: 90%;
+  align-self: center;
+  justify-self: center;
+}
+
+.btn {
+  align-self: center;
+  justify-self: center;
+}
+
+.grid-item {
+  background-color: rgba(255, 255, 255, 0.8);
+  border: 1px solid rgba(0, 0, 0, 0.8);
+  padding: 20px;
+  font-size: 30px;
+  text-align: center;
+  margin: 5px;
+}
+
+.pong {
+  background-color: red;
+  height: 75vh;
+}
+
+.video-stripe {
+  height: 25vh;
+  background-color: aliceblue;
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-content: center;
+}
+
+.grid-container-small {
+  display: inline-grid;
+  grid-template-columns: auto auto auto auto;
+  background-color: #2196f3;
+  margin: 10px;
+  width: 90%;
+  height: 90%;
+  align-self: center;
+  justify-self: center;
+}
+
+.control-small {
+  width: 15%;
+}
+
+.participants-view {
+  height: 50vh;
+  border-style: solid;
+}
+
+.video-me {
+  height: 25vh;
+  background-color: aqua;
+}

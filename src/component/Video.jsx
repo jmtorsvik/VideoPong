@@ -1,12 +1,16 @@
-import React from "react";
-import VideoApp from "../VideoApp";
+import React, { useState } from "react";
+import VideoApp from "./VideoApp";
+import "./css/video.css";
 
 function Video() {
-    return (
-        <div className="Video">
-            <h1>Hello</h1>
-            <VideoApp />
-        </div>
-    );
+  const [isFull, setIsFull] = useState(false);
+  function handleChange() {
+    setIsFull(!isFull);
+  }
+  return (
+    <div className="video-view">
+      <VideoApp isFullScreen={isFull} onChangeValue={() => handleChange()} />
+    </div>
+  );
 }
 export default Video;
