@@ -19,11 +19,12 @@
   flex-direction: row;
   justify-content: center;
   align-content: center;
+  background-color: #DBDCDD;
 }
 .control-full {
-  width: 50%;
+  width: 40%;
   height: 100vh;
-  background-color: yellow;
+  margin: 0 16px;
 }
 
 .grid-container-full {
@@ -51,13 +52,12 @@
 }
 
 .pong {
-  background-color: red;
+  background-color: #DBDCDD;
   height: 75vh;
 }
 
 .video-stripe {
   height: 25vh;
-  background-color: aliceblue;
   display: flex;
   flex-direction: row;
   justify-content: center;
@@ -67,7 +67,6 @@
 .grid-container-small {
   display: inline-grid;
   grid-template-columns: auto auto auto auto;
-  background-color: #2196f3;
   margin: 10px;
   width: 90%;
   height: 90%;
@@ -86,5 +85,5 @@
 
 .video-me {
   height: 25vh;
-  background-color: aqua;
+  border-style: solid;
 }

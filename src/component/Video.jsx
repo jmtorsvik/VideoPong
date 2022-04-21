@@ -3,7 +3,7 @@ import VideoApp from "./VideoApp";
 import "./css/video.css";
 
 function Video() {
-  const [isFull, setIsFull] = useState(false);
+  const [isFull, setIsFull] = useState(true);
   function handleChange() {
     setIsFull(!isFull);
   }
