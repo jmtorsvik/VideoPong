@@ -1,12 +1,12 @@
 import React, {useState} from "react";
-import "./css/register.css"; // Css gjøres i css fila og du can bruke class name slik som vist i div her
+import "./css/register.css";
 import {Button, Form} from "react-bootstrap";
 
 
 
 function Register() {
     const [input, setInput] = useState("");
-    const [isRegistered, setIsRegistered] = useState(localStorage.getItem('komSys')); //Kan state settes når man har sjekket om det er lagret en tidligere innlogging i browser
+    const [isRegistered, setIsRegistered] = useState(localStorage.getItem('komSys'));
 
     function onSubmitPress() {
         localStorage.setItem('komSys', input);
