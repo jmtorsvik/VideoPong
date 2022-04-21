@@ -1,0 +1,13 @@
+.participant-card {
+  display: flex;
+  flex-direction: row;
+  border-style: none none dotted none;
+}
+.button-align {
+  width: 30%;
+  align-self: center;
+}
+
+.name-display {
+  width: 70%;
+}
