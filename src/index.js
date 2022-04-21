@@ -8,13 +8,13 @@ import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
 import "bootstrap/dist/css/bootstrap.css";
 
 ReactDOM.render(
-  <Router>
-    <Routes>
-      <Route path="/" element={<Register />} />
-      <Route path="/game" element={<App />} />
-      <Route path="/video" element={<Video />} />
-    </Routes>
-  </Router>,
+    <Router>
+        <Routes>
+            <Route path="/" element={<Register />} />
+            <Route path="/game" element={<App />} />
+            <Route path="/video" element={<Video />} />
+        </Routes>
+    </Router>,
   document.getElementById("root")
 );
 

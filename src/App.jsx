@@ -1,8 +1,21 @@
 import { useEffect, useRef } from "react";
 import "./App.css";
 
+import { useMqttState } from "mqtt-react-hooks";
+
+const GLOBAL_IDENTIFIER = "ttm4155";
+
 export default function App() {
   const ref = useRef();
+
+  const { connectionStatus, client } = useMqttState();
+
+  useEffect(() => {
+    console.log(connectionStatus);
+    client.subscribe("/" + GLOBAL_IDENTIFIER);
+  }, [connectionStatus]);
+
+
   useEffect(() => {
     if (ref.current) {
       const canvas = ref.current;
