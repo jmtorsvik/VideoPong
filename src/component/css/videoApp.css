@@ -40,6 +40,7 @@
 .btn {
   align-self: center;
   justify-self: center;
+  margin: 0 !important;
 }
 
 .grid-item {
@@ -80,10 +81,10 @@
 
 .participants-view {
   height: 50vh;
-  border-style: solid;
+  border: 1px solid rgba(0, 0, 0, 0.8);
 }
 
 .video-me {
   height: 25vh;
-  border-style: solid;
+  border: 1px solid rgba(0, 0, 0, 0.8);
 }

@@ -1,6 +1,7 @@
 .participant-card {
   display: flex;
   flex-direction: row;
+  border: 1px rgba(0, 0, 0, 0.8);
   border-style: none none dotted none;
 }
 .button-align {
