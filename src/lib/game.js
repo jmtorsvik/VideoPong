@@ -21,7 +21,7 @@ export function startGame(canvas) {
       // draw elements
       draw(canvas);
     }
-    client.subscribe("/ojaefnslkfnsrephwoghwr/#");
+    client.subscribe("/ponggname/#");
 
     client.on("message", (topic, message, packet) => {
       console.log(packet);
@@ -34,14 +34,15 @@ export function startGame(canvas) {
       if (parsed_message) {
         // eslint-disable-next-line default-case
         switch (topic) {
-          case "/ojaefnslkfnsrephwoghwr/balldeflect":
+          case "/ponggname/balldeflect":
             break;
-          case "/ojaefnslkfnsrephwoghwr/goal":
+          case "/ponggname/goal":
             rightPlayer.score++;
             break;
-          case "/ojaefnslkfnsrephwoghwr/playerSpeed":
+          case "/ponggname/playerSpeed":
             leftPlayer.dy = parsed_message.dy;
             break;
+          case "/ponggame/new_user":
         }
       }
     });

@@ -53,7 +53,7 @@ export function move(canvas) {
       // TO-DO: SEND MQTT MESSAGE ABOUT BALL HIT!
       console.log("I PUBLISH");
       client.publish(
-        "/ojaefnslkfnsrephwoghwr/balldeflect",
+        "/ponggname/balldeflect",
         JSON.stringify({
           ball: { dx: -ball.dx, dy: ball.dy },
           barY: rightPlayer.y,
@@ -68,7 +68,7 @@ export function move(canvas) {
       console.log("I PUBLISH");
 
       client.publish(
-        "/ojaefnslkfnsrephwoghwr/goal",
+        "/ponggname/goal",
         JSON.stringify({
           ball: { dx: -ball.dx, dy: ball.dy },
           score: leftPlayer.score,
@@ -168,7 +168,7 @@ function publishSpeed() {
   console.log("I PUBLISH");
 
   client.publish(
-    "/ojaefnslkfnsrephwoghwr/playerspeed",
+    "/ponggname/playerspeed",
     JSON.stringify({
       dy: rightPlayer.dy,
       clientId,

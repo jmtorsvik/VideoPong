@@ -1,21 +1,19 @@
 import React from "react";
 import ReactDOM from "react-dom";
-import App from "./App";
+import Game from "./Game";
 import Video from "./component/Video";
 import Register from "./component/Register";
 import reportWebVitals from "./reportWebVitals";
-import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
+import {
+  BrowserRouter,
+  BrowserRouter as Router,
+  Route,
+  Routes,
+} from "react-router-dom";
 import "bootstrap/dist/css/bootstrap.css";
+import Store from "./component/ParticaipantContext";
+import App from "./App";
 
-ReactDOM.render(
-    <Router>
-        <Routes>
-            <Route path="/" element={<Register />} />
-            <Route path="/game" element={<App />} />
-            <Route path="/video" element={<Video />} />
-        </Routes>
-    </Router>,
-  document.getElementById("root")
-);
+ReactDOM.render(<App />, document.getElementById("root"));
 
 reportWebVitals();
