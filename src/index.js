@@ -11,9 +11,14 @@ import {
   Routes,
 } from "react-router-dom";
 import "bootstrap/dist/css/bootstrap.css";
-import Store from "./component/ParticaipantContext";
+import Store, { ParticipantContext } from "./component/ParticaipantContext";
 import App from "./App";
 
-ReactDOM.render(<App />, document.getElementById("root"));
+ReactDOM.render(
+  <BrowserRouter>
+    <App />
+  </BrowserRouter>,
+  document.getElementById("root")
+);
 
 reportWebVitals();
