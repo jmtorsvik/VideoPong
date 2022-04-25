@@ -4,7 +4,7 @@ from threading import Thread
 class StatusLampMQTTClient:
     def __init__(self, stm_driver):
         self.count = 0
-        self.client = mqtt.Client()
+        self.client = mqtt.Client(transport="websockets")
         self.client.on_connect = self.on_connect
         self.client.on_message = self.on_message
         self.stm_driver = stm_driver
@@ -13,14 +13,20 @@ class StatusLampMQTTClient:
         print("on_connect(): {}".format(mqtt.connack_string(rc)))
 
     def on_message(self, client, userdata, msg):
-        print("on_message(): topic: {}".format(msg.topic))
-
-        # create string from message payload
-        m = str(msg.payload, "UTF-8")
+        t = msg.topic
         
-        #send message if it's valid
-        valid_msg = ["start_video", "stop", "start_game", "stop_game"]
-        if (m in valid_msg):
+        print("on_message(): topic: {}".format(t))
+
+        m = None
+        pf = "/ponggame/"
+        if (t == pf + "start_game"):
+            m = "start_game"
+        elif (t == pf + "new_user"):
+            m = "start_video"
+        elif (t == pf + "cancel"):
+            m = "stop_game"
+        
+        if (m != None):
             self.stm_driver.send(m, "stm_status_lamp")
 
     def start(self, broker, port):
@@ -28,8 +34,7 @@ class StatusLampMQTTClient:
         print("Connecting to {}:{}".format(broker, port))
         self.client.connect(broker, port)
 
-        #self.client.subscribe("ttm4115")
-        self.client.subscribe("/ttm4115/team13")
+        self.client.subscribe("/ponggame/#")
 
         try:
             # line below should not have the () after the function!
