@@ -10,7 +10,6 @@ function Register() {
   );
 
   function onSubmitPress() {
-    client.publish("/ponggame/new_user", JSON.stringify({ username: input }));
     localStorage.setItem("username", input);
     setIsRegistered(input);
   }

@@ -10,7 +10,7 @@ import {
 } from "./gameVar";
 import client from "./mqtt";
 
-export function move(canvas) {
+export function move(canvas, gameName) {
   // set boundaries
   const maxX = canvas.width - rightPlayer.width;
   const maxY = canvas.height - grid;
@@ -53,41 +53,33 @@ export function move(canvas) {
       // TO-DO: SEND MQTT MESSAGE ABOUT BALL HIT!
       console.log("I PUBLISH");
       client.publish(
-        "/ponggname/balldeflect",
+        "/ponggame/" + gameName + "/balldeflect",
         JSON.stringify({
           ball: { dx: -ball.dx, dy: ball.dy },
           barY: rightPlayer.y,
-          clientId,
+          username: localStorage.getItem("username"),
         })
       );
     } else {
-      console.log("RAN");
       leftPlayer.score++;
       resetBall(canvas);
-      // TO-DO: SEND MQTT MESSAGE ABOUT GOAL!
-      console.log("I PUBLISH");
-
       client.publish(
-        "/ponggname/goal",
+        "/ponggame/" + gameName + "/goal",
         JSON.stringify({
           ball: { dx: -ball.dx, dy: ball.dy },
           score: leftPlayer.score,
-          clientId,
+          username: localStorage.getItem("username"),
         })
       );
     }
   }
 
   // stop ball if it hits opponent side
-  /*if (ball.x < leftPlayer.width) {
-    ball.x = leftPlayer.width;
-    ball.dx = ball.dy = 0;
-  }*/
-  // TEMP: deflect ball off opponent side
   if (ball.x < leftPlayer.width) {
     ball.x = leftPlayer.width;
-    ball.dx = -ball.dx;
+    ball.dx = ball.dy = 0;
   }
+  // TEMP: deflect ball off opponent side
 }
 
 export function draw(canvas) {
@@ -140,15 +132,15 @@ export function draw(canvas) {
   );
 }
 
-export function addKeyListeners() {
+export function addKeyListeners(gameName) {
   // listen to keyboard events to move the players
   document.addEventListener("keydown", function (e) {
     if (e.key === "ArrowUp") {
       rightPlayer.dy = -playerSpeed;
-      publishSpeed();
+      publishSpeed(gameName);
     } else if (e.key === "ArrowDown") {
       rightPlayer.dy = playerSpeed;
-      publishSpeed();
+      publishSpeed(gameName);
     }
   });
 
@@ -159,27 +151,25 @@ export function addKeyListeners() {
       (e.key === "ArrowDown" && rightPlayer.dy > 0)
     ) {
       rightPlayer.dy = 0;
-      publishSpeed();
+      publishSpeed(gameName);
     }
   });
 }
 
-function publishSpeed() {
-  console.log("I PUBLISH");
-
+function publishSpeed(gameName) {
   client.publish(
-    "/ponggname/playerspeed",
+    "/ponggame/" + gameName + "/playerspeed",
     JSON.stringify({
       dy: rightPlayer.dy,
-      clientId,
+      username: localStorage.getItem("username"),
     })
   );
 }
 
-export function resetBall(canvas) {
+export function resetBall(canvas, isInitiator) {
   ball.x = (canvas.width - ball.size) / 2;
   ball.y = (canvas.height - ball.size) / 2;
   // TO-DO: RANDOMIZE BALL START
-  ball.dx = 4;
+  ball.dx = isInitiator ? 4 : -4;
   ball.dy = 4;
 }
