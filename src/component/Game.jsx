@@ -9,6 +9,7 @@ import {
   leftPlayer,
   pending,
   globalGame,
+  ball,
 } from "../lib/gameVar";
 import client from "../lib/mqtt";
 import { GameContext } from "./GameContext";
@@ -45,6 +46,10 @@ export function Game() {
           if (topic === `/ponggame/${gameName}/goal`) {
             console.log("RAN!");
             if (parsed_message.username !== localStorage.getItem("username")) {
+              ball.dy = 0;
+              ball.dx = 0;
+              ball.x = (ref.current.width - ball.size) / 2;
+              ball.y = (ref.current.height - ball.size) / 2;
               rightPlayer.score = parsed_message.score;
             }
             setTimeout(() => {
@@ -93,7 +98,7 @@ export function Game() {
   }, [game]);
 
   return (
-    <div>
+    <div style={{ display: "flex", width: "100%", justifyContent: "center" }}>
       <canvas
         width={canvasWidth}
         height={canvasHeight}
