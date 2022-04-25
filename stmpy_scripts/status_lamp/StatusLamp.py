@@ -13,26 +13,31 @@ class StatusLamp:
     # set pixels of sense hat
     def set_pixels(self):
         self.sense.set_pixels(self.pixels)
+        print("setting pixels")
 
     # turns lamp1 off
     def lamp1_off(self):
         self.pixels = self.pixels[:40] + 24*[self.off]
         self.set_pixels()
+        print("lamp 1 off")
 
     # turns lamp1 on
     def lamp1_on(self):
         self.pixels = self.pixels[:40] + 24*[self.blue]
         self.set_pixels()
+        print("lamp 1 on")
 
     # turns lamp2 off
     def lamp2_off(self):
         self.pixels = 24*[self.off] + self.pixels[24:]
         self.set_pixels()
+        print("lamp 2 off")
 
     # turns lamp2 on
     def lamp2_on(self):
         self.pixels = 24*[self.green] + self.pixels[24:]
         self.set_pixels()
+        print("lamp 2 on")
       
 status_lamp = StatusLamp()
 

@@ -2,7 +2,7 @@ from stmpy import Driver
 from StatusLamp import stm_status_lamp
 from mqtt import StatusLampMQTTClient
 
-broker, port = "ws://broker.emqx.io:8083/mqtt", 8083
+broker, port = "broker.emqx.io", 8083
 
 # define driver with added state machine
 driver = Driver()

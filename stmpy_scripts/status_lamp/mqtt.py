@@ -4,7 +4,7 @@ from threading import Thread
 class StatusLampMQTTClient:
     def __init__(self, stm_driver):
         self.count = 0
-        self.client = mqtt.Client()
+        self.client = mqtt.Client(transport="websockets")
         self.client.on_connect = self.on_connect
         self.client.on_message = self.on_message
         self.stm_driver = stm_driver
@@ -15,15 +15,17 @@ class StatusLampMQTTClient:
     def on_message(self, client, userdata, msg):
         print("on_message(): topic: {}".format(msg.topic))
 
-        # create string from message payload
-        m = str(msg.payload, "UTF-8")
+        t = msg.topic
+        m = None
+        if (t == "/ponggame/start_game"):
+            m = "start_game"
+        elif (t == "/ponggame/new_user"):
+            m = "start_video"
+        elif (t == "/ponggame/cancel"):
+            m = "stop_game"
         
-        #send message if it's valid
-        valid_msg = ["start_video", "stop", "start_game", "stop_game"]
-        if (m in valid_msg):
+        if (m != None):
             self.stm_driver.send(m, "stm_status_lamp")
-
-        # TO-DO: Adjust this to the application code
 
     def start(self, broker, port):
 
