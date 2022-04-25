@@ -13,6 +13,7 @@ class StatusLamp:
     # set pixels of sense hat
     def set_pixels(self):
         self.sense.set_pixels(self.pixels)
+        print(len(self.pixels))
 
     # turns lamp1 off
     def lamp1_off(self):
