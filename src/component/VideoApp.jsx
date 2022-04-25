@@ -1,5 +1,5 @@
 import { Provider } from "react-redux";
-import React, { useContext, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import * as SWRTC from "@andyet/simplewebrtc";
 import {
   getAudioOutputDevice,
@@ -19,6 +19,9 @@ import {
 import { Audio, Video } from "@andyet/simplewebrtc";
 import Participant from "./Participant";
 import { ParticipantContext } from "./ParticaipantContext";
+import client from "../lib/mqtt";
+import { GameContext } from "./GameContext";
+import Game from "./Game";
 
 // ====================================================================
 // IMPORTANT SETUP
@@ -35,23 +38,46 @@ const CONFIG_URL = `https://api.simplewebrtc.com/config/guest/${API_KEY}`;
 
 const store = SWRTC.createStore();
 
-export default function VideoApp({ isFullScreen, onChangeValue }) {
+export default function VideoApp({ isNormalMode }) {
   const [currentPage, setCurrentPage] = useState(0);
   const { participants, setParticipants } = useContext(ParticipantContext);
+  const { game, setGame } = useContext(GameContext);
   const [totalPages, setTotalPages] = useState(
-    isFullScreen
-      ? Math.ceil(participants.length / 9)
-      : Math.ceil(participants.length / 4)
+    isNormalMode
+      ? Math.ceil(Array.from(participants).length / 9)
+      : Math.ceil(Array.from(participants).length / 4)
   );
 
-  function changePageLayout() {
+  function layoutReset() {
     setCurrentPage(0);
-    onChangeValue();
     setTotalPages(
-      !isFullScreen
-        ? Math.ceil(participants.length / 9)
-        : Math.ceil(participants.length / 4)
+      !isNormalMode
+        ? Math.ceil(Array.from(participants).length / 9)
+        : Math.ceil(Array.from(participants).length / 4)
     );
+  }
+
+  useEffect(() => {
+    client.subscribe("/ponggame/#");
+    client.on("message", (topic, message, packet) => {
+      if (topic === "/ponggame/start_game") {
+        const { participants } = JSON.parse(message);
+        const initiator = participants[0];
+        const opponent = participants[1];
+
+        if (
+          initiator === localStorage.getItem("username") ||
+          opponent === localStorage.getItem("username")
+        ) {
+          layoutReset();
+        }
+      }
+    });
+  }, []);
+
+  function cancelGame() {
+    client.publish("/ponggame/cancel", JSON.stringify(game));
+    layoutReset();
   }
 
   return (
@@ -72,7 +98,7 @@ export default function VideoApp({ isFullScreen, onChangeValue }) {
           {/* Connect to a room with a name and optional password */}
           <SWRTC.Room name={ROOM_NAME} password={ROOM_PASSWORD}>
             {(props) => {
-              if (isFullScreen) {
+              if (isNormalMode) {
                 return (
                   <div className="horizontal">
                     <div className="video-main">
@@ -90,14 +116,14 @@ export default function VideoApp({ isFullScreen, onChangeValue }) {
 
                       <div className="grid-container-full">
                         {currentPage === totalPages
-                          ? participants
+                          ? Array.from(participants)
                               .slice(9 * currentPage)
                               .map((value, index) => (
                                 <div key={index} className="grid-item">
                                   {value}
                                 </div>
                               ))
-                          : participants
+                          : Array.from(participants)
                               .slice(9 * currentPage, 9 + 9 * currentPage)
                               .map((value, index) => (
                                 <div key={index} className="grid-item">
@@ -118,48 +144,28 @@ export default function VideoApp({ isFullScreen, onChangeValue }) {
                     </div>
                     <div className="control-full">
                       <div className="btn">
-                        <Button
-                          type="button"
-                          className="btn btn-primary"
-                          onClick={() => changePageLayout()}
-                        >
+                        <Button type="button" className="btn btn-primary">
                           Play game
                         </Button>
                       </div>
                       <div className="overflow-auto participants-view">
-                        {participants.map((value, index) => (
-                          <Participant
-                            key={index}
-                            participantName={value}
-                            onChangeValue={onChangeValue}
-                          />
+                        {Array.from(participants).map((value, index) => (
+                          <Participant key={index} participantName={value} />
                         ))}
                       </div>
                       <div className="horizontal">
                         <div className="btn">
-                          <Button
-                            type="button"
-                            className="btn btn-primary"
-                            onClick={() => changePageLayout()}
-                          >
+                          <Button type="button" className="btn btn-primary">
                             <FaMicrophone />
                           </Button>
                         </div>
                         <div className="btn">
-                          <Button
-                            type="button"
-                            className="btn btn-primary"
-                            onClick={() => changePageLayout()}
-                          >
+                          <Button type="button" className="btn btn-primary">
                             <FaVideo />
                           </Button>
                         </div>
                         <div className="btn">
-                          <Button
-                            type="button"
-                            className="btn btn-danger"
-                            onClick={() => changePageLayout()}
-                          >
+                          <Button type="button" className="btn btn-danger">
                             Leave room
                           </Button>
                         </div>
@@ -171,7 +177,9 @@ export default function VideoApp({ isFullScreen, onChangeValue }) {
               } else {
                 return (
                   <div className="vertical">
-                    <div className="pong">a</div>
+                    <div className="pong">
+                      <Game />
+                    </div>
                     <div className="video-stripe">
                       <div className="btn">
                         <Button
@@ -187,14 +195,14 @@ export default function VideoApp({ isFullScreen, onChangeValue }) {
 
                       <div className="grid-container-small">
                         {currentPage === totalPages
-                          ? participants
+                          ? Array.from(participants)
                               .slice(4 * currentPage)
                               .map((value, index) => (
                                 <div key={index} className="grid-item">
                                   {value}
                                 </div>
                               ))
-                          : participants
+                          : Array.from(participants)
                               .slice(4 * currentPage, 4 + 4 * currentPage)
                               .map((value, index) => (
                                 <div key={index} className="grid-item">
@@ -217,37 +225,25 @@ export default function VideoApp({ isFullScreen, onChangeValue }) {
                           <Button
                             type="button"
                             className="btn btn-primary"
-                            onClick={() => changePageLayout()}
+                            onClick={() => cancelGame()}
                           >
                             End game
                           </Button>
                         </div>
                         <div className="horizontal">
                           <div className="btn">
-                            <Button
-                              type="button"
-                              className="btn btn-primary"
-                              onClick={() => changePageLayout()}
-                            >
+                            <Button type="button" className="btn btn-primary">
                               <FaMicrophone />
                             </Button>
                           </div>
                           <div className="btn">
-                            <Button
-                              type="button"
-                              className="btn btn-primary"
-                              onClick={() => changePageLayout()}
-                            >
+                            <Button type="button" className="btn btn-primary">
                               <FaVideo />
                             </Button>
                           </div>
                         </div>
                         <div className="btn">
-                          <Button
-                            type="button"
-                            className="btn btn-danger"
-                            onClick={() => changePageLayout()}
-                          >
+                          <Button type="button" className="btn btn-danger">
                             Leave room
                           </Button>
                         </div>
