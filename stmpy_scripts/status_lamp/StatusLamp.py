@@ -1,29 +1,42 @@
 from stmpy import Machine
+from sense_hat import SenseHat
 
 class StatusLamp:
-    
+
     def __init__(self):
-        self.lamp1 = False # define lamp 1 here (somehow...)
-        self.lamp2 = False # define lamp 2 here (somehow...)
-    
+        self.sense = SenseHat()
+        self.off = (0, 0, 0)
+        self.blue = (0, 0, 255)
+        self.green = (0, 255, 0)
+        self.pixels = 64*[self.off]
+
+    # set pixels of sense hat
+    def set_pixels(self):
+        self.sense.set_pixels(self.pixels)
+        print(len(self.pixels))
+
     # turns lamp1 off
     def lamp1_off(self):
-        self.lamp1 = False
+        self.pixels = self.pixels[:40] + 24*[self.off]
+        self.set_pixels()
         print("lamp1 turned off")
 
     # turns lamp1 on
     def lamp1_on(self):
-        self.lamp1 = True
+        self.pixels = self.pixels[:40] + 24*[self.blue]
+        self.set_pixels()
         print("lamp1 turned on")
 
     # turns lamp2 off
     def lamp2_off(self):
-        self.lamp2 = False
+        self.pixels = 24*[self.off] + self.pixels[40:]
+        self.set_pixels()
         print("lamp2 turned off")
 
     # turns lamp2 on
     def lamp2_on(self):
-        self.lamp2 = True
+        self.pixels = 24*[self.green] + self.pixels[40:]
+        self.set_pixels()
         print("lamp2 turned on")
       
 status_lamp = StatusLamp()
