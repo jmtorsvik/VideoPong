@@ -1,30 +1,25 @@
 from stmpy import Machine
+from sense_hat import SenseHat
 
 class StatusLamp:
-    
+
     def __init__(self):
-        self.lamp1 = False # define lamp 1 here (somehow...)
-        self.lamp2 = False # define lamp 2 here (somehow...)
-    
-    # turns lamp1 off
-    def lamp1_off(self):
-        self.lamp1 = False
-        print("lamp1 turned off")
+        self.sense = SenseHat()
 
-    # turns lamp1 on
-    def lamp1_on(self):
-        self.lamp1 = True
-        print("lamp1 turned on")
+    # switch lamp off
+    def lamp_off(self):
+        self.sense.clear()
+        print("lamp turned off")
 
-    # turns lamp2 off
-    def lamp2_off(self):
-        self.lamp2 = False
-        print("lamp2 turned off")
+    # switch lamp to blue
+    def lamp_blue(self):
+        self.sense.clear((0, 0, 255))
+        print("lamp turned blue")
 
-    # turns lamp2 on
-    def lamp2_on(self):
-        self.lamp2 = True
-        print("lamp2 turned on")
+    # switch lamp to green
+    def lamp_green(self):
+        self.sense.clear((0, 255, 0))
+        print("lamp turned green")
       
 status_lamp = StatusLamp()
 
@@ -60,15 +55,15 @@ t5 = {'trigger':'stop',
 
 # define states
 idle = {'name': 'idle',
-       'entry': 'lamp1_off; lamp2_off'
+       'entry': 'lamp_off'
 }
 
 in_video = {'name': 'in_video',
-      'entry': 'lamp1_on; lamp2_off'
+      'entry': 'lamp_blue'
 }
 
 in_game = {'name': 'in_game',
-      'entry': 'lamp2_on'
+      'entry': 'lamp_green'
 }
 
 # define state machine
