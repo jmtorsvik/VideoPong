@@ -13,15 +13,17 @@ class StatusLampMQTTClient:
         print("on_connect(): {}".format(mqtt.connack_string(rc)))
 
     def on_message(self, client, userdata, msg):
-        print("on_message(): topic: {}".format(msg.topic))
-
         t = msg.topic
+        
+        print("on_message(): topic: {}".format(t))
+
         m = None
-        if (t == "/ponggame/start_game"):
+        pf = "/ponggame/"
+        if (t == pf + "start_game"):
             m = "start_game"
-        elif (t == "/ponggame/new_user"):
+        elif (t == pf + "new_user"):
             m = "start_video"
-        elif (t == "/ponggame/cancel"):
+        elif (t == pf + "cancel"):
             m = "stop_game"
         
         if (m != None):
