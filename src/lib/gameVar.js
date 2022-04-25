@@ -19,6 +19,9 @@ export let ball = {
 
 const playerWidth = grid;
 const playerHeight = grid * 7;
+export let globalGame = {
+  pending: null,
+};
 
 export let leftPlayer = {
   x: 0,

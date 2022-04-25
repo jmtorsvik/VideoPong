@@ -1,5 +1,5 @@
 import { move, draw, addKeyListeners, resetBall } from "./gameFunc";
-import { ball } from "./gameVar";
+import { ball, globalGame } from "./gameVar";
 import client from "./mqtt";
 
 export function startGame(canvas, gameName, isInitiator) {
@@ -20,6 +20,7 @@ export function startGame(canvas, gameName, isInitiator) {
   // set initial ball speed
   resetBall(canvas, isInitiator);
 
-  // start the game
   requestAnimationFrame(loop);
+
+  // start the game
 }

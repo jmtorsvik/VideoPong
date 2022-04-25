@@ -12,7 +12,7 @@ function Participant({ participantName }) {
     try {
       console.log("HALLA");
       const now = new Date();
-      now.setSeconds(now.getSeconds() + 5);
+      now.setSeconds(now.getSeconds() + 1);
       client.publish(
         "/ponggame/start_game",
         JSON.stringify({

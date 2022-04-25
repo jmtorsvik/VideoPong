@@ -6,7 +6,8 @@ import {
   playerSpeed,
   scoreSize,
   colors,
-  clientId,
+  pending,
+  globalGame,
 } from "./gameVar";
 import client from "./mqtt";
 
@@ -51,7 +52,6 @@ export function move(canvas, gameName) {
       ball.x = maxX - ball.size;
       ball.dx = -ball.dx;
       // TO-DO: SEND MQTT MESSAGE ABOUT BALL HIT!
-      console.log("I PUBLISH");
       client.publish(
         "/ponggame/" + gameName + "/balldeflect",
         JSON.stringify({
@@ -61,25 +61,38 @@ export function move(canvas, gameName) {
         })
       );
     } else {
-      leftPlayer.score++;
-      resetBall(canvas);
-      client.publish(
-        "/ponggame/" + gameName + "/goal",
-        JSON.stringify({
-          ball: { dx: -ball.dx, dy: ball.dy },
-          score: leftPlayer.score,
-          username: localStorage.getItem("username"),
-        })
-      );
+      //resetBall(canvas, true);
+      ball.dy = 0;
+      ball.dx = 0;
+      ball.x = (canvas.width - ball.size) / 2;
+      ball.y = (canvas.height - ball.size) / 2;
+      if (globalGame.pending === null) {
+        globalGame.pending = "goal";
+        const now = new Date();
+        leftPlayer.score++;
+        now.setSeconds(now.getSeconds() + 5);
+        client.publish(
+          "/ponggame/" + gameName + "/goal",
+          JSON.stringify({
+            score: leftPlayer.score,
+            username: localStorage.getItem("username"),
+            timestamp: now,
+          })
+        );
+      }
     }
   }
 
   // stop ball if it hits opponent side
-  if (ball.x < leftPlayer.width) {
+  if (false && ball.x < leftPlayer.width) {
     ball.x = leftPlayer.width;
     ball.dx = ball.dy = 0;
   }
   // TEMP: deflect ball off opponent side
+  if (ball.x < leftPlayer.width) {
+    ball.x = leftPlayer.width;
+    ball.dx = -ball.dx;
+  }
 }
 
 export function draw(canvas) {

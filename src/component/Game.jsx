@@ -7,6 +7,8 @@ import {
   canvasHeight,
   rightPlayer,
   leftPlayer,
+  pending,
+  globalGame,
 } from "../lib/gameVar";
 import client from "../lib/mqtt";
 import { GameContext } from "./GameContext";
@@ -37,25 +39,38 @@ export function Game() {
         } catch (err) {
           console.log("NOE_GIKK_GALT");
         }
+
         if (parsed_message) {
           // eslint-disable-next-line default-case
+          if (topic === `/ponggame/${gameName}/goal`) {
+            console.log("RAN!");
+            if (parsed_message.username !== localStorage.getItem("username")) {
+              rightPlayer.score = parsed_message.score;
+            }
+            setTimeout(() => {
+              resetBall(
+                ref.current,
+                parsed_message.username === localStorage.getItem("username")
+              );
+              globalGame.pending = null;
+            }, new Date() - new Date(parsed_message.timestamp));
+          }
           if (parsed_message.username !== localStorage.getItem("username")) {
             switch (topic) {
               case `/ponggame/${gameName}/balldeflect`:
-                break;
-              case `/ponggame/${gameName}/goal`:
-                rightPlayer.score++;
                 break;
               case `/ponggame/${gameName}/playerspeed`:
                 console.log(parsed_message.dy);
                 leftPlayer.dy = parsed_message.dy;
                 break;
+              default:
+                return;
             }
           }
         }
       });
     }
-  });
+  }, []);
 
   useEffect(() => {
     if (ref.current && game) {
