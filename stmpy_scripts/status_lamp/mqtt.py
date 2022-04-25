@@ -23,13 +23,14 @@ class StatusLampMQTTClient:
         if (m in valid_msg):
             self.stm_driver.send(m, "stm_status_lamp")
 
+        # TO-DO: Adjust this to the application code
+
     def start(self, broker, port):
 
         print("Connecting to {}:{}".format(broker, port))
         self.client.connect(broker, port)
 
-        #self.client.subscribe("ttm4115")
-        self.client.subscribe("/ttm4115/team13")
+        self.client.subscribe("/ponggame/#")
 
         try:
             # line below should not have the () after the function!
