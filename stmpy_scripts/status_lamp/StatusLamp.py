@@ -1,25 +1,42 @@
 from stmpy import Machine
-from sense_hat import SenseHat
+from sense_hat import SenseHat()
 
 class StatusLamp:
 
     def __init__(self):
         self.sense = SenseHat()
+        self.off = (0, 0, 0)
+        self.blue = (0, 0, 255)
+        self.green = (0, 255, 0)
+        self.pixels = 64*[self.off]
 
-    # switch lamp off
-    def lamp_off(self):
-        self.sense.clear()
-        print("lamp turned off")
+    # set pixels of sense hat
+    def set_pixels(self):
+        self.sense.set_pixels(self.pixels)
 
-    # switch lamp to blue
-    def lamp_blue(self):
-        self.sense.clear((0, 0, 255))
-        print("lamp turned blue")
+    # turns lamp1 off
+    def lamp1_off(self):
+        self.pixels = self.pixels[:40] + 24*[self.off]
+        self.set_pixels()
+        print("lamp1 turned off")
 
-    # switch lamp to green
-    def lamp_green(self):
-        self.sense.clear((0, 255, 0))
-        print("lamp turned green")
+    # turns lamp1 on
+    def lamp1_on(self):
+        self.pixels = self.pixels[:40] + 24*[self.blue]
+        self.set_pixels()
+        print("lamp1 turned on")
+
+    # turns lamp2 off
+    def lamp2_off(self):
+        self.pixels = 24*[self.off] + self.pixels[40:]
+        self.set_pixels()
+        print("lamp2 turned off")
+
+    # turns lamp2 on
+    def lamp2_on(self):
+        self.pixels = 24*[self.green] + self.pixels[40:]
+        self.set_pixels()
+        print("lamp2 turned on")
       
 status_lamp = StatusLamp()
 
@@ -55,15 +72,15 @@ t5 = {'trigger':'stop',
 
 # define states
 idle = {'name': 'idle',
-       'entry': 'lamp_off'
+       'entry': 'lamp1_off; lamp2_off'
 }
 
 in_video = {'name': 'in_video',
-      'entry': 'lamp_blue'
+      'entry': 'lamp1_on; lamp2_off'
 }
 
 in_game = {'name': 'in_game',
-      'entry': 'lamp_green'
+      'entry': 'lamp2_on'
 }
 
 # define state machine
