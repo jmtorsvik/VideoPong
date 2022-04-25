@@ -29,13 +29,13 @@ class StatusLamp:
 
     # turns lamp2 off
     def lamp2_off(self):
-        self.pixels = 24*[self.off] + self.pixels[40:]
+        self.pixels = 24*[self.off] + self.pixels[24:]
         self.set_pixels()
         print("lamp2 turned off")
 
     # turns lamp2 on
     def lamp2_on(self):
-        self.pixels = 24*[self.green] + self.pixels[40:]
+        self.pixels = 24*[self.green] + self.pixels[24:]
         self.set_pixels()
         print("lamp2 turned on")
       
