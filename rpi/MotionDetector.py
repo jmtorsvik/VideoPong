@@ -63,6 +63,7 @@ class MotionDetector:
             cv2.imshow("Difference Frame", diff_frame)
 
         video.release()
+        cv2.destroyAllWindows()
         print("Stopped detecting")                 
       
 motion_detector = MotionDetector()
