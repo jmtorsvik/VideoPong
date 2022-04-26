@@ -28,6 +28,7 @@ class MotionDetector:
         back_frame = None
         video = cv2.VideoCapture(0)
         while (self.running):
+            print("TEST")
             _, frame = video.read()
             detected = False
 
