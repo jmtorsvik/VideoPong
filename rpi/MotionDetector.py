@@ -88,7 +88,8 @@ t3 = {'trigger':'motion_detected',
 
 t4 = {'trigger':'t', 
       'source':'detected', 
-      'target':'detecting', 
+      'target':'detecting',
+      'effect': 'stop_detecting'
 }
 
 t5 = {'trigger':'stop', 
