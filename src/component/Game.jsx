@@ -65,7 +65,6 @@ export function Game() {
               case `/ponggame/${gameName}/balldeflect`:
                 break;
               case `/ponggame/${gameName}/playerspeed`:
-                console.log(parsed_message.dy);
                 leftPlayer.dy = parsed_message.dy;
                 break;
               default:
