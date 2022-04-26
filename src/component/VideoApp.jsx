@@ -22,6 +22,7 @@ import { ParticipantContext } from "./ParticaipantContext";
 import client from "../lib/mqtt";
 import { GameContext } from "./GameContext";
 import Game from "./Game";
+import jwt from "jsonwebtoken";
 
 // ====================================================================
 // IMPORTANT SETUP
@@ -29,18 +30,18 @@ import Game from "./Game";
 // Replace `YOUR_PUBLISHABLE_API_KEY` here with the Publishable API Key
 // you received when signing up for SimpleWebRTC
 // --------------------------------------------------------------------
-const API_KEY = "15d3a1c84bb2df4361ad55cb";
+const API_KEY = "bb5f1b02c62c47568a0d759e";
 // ====================================================================
 
-const ROOM_NAME = "YOUR_ROOM_NAME";
-const ROOM_PASSWORD = "YOUR_ROOM_PASSWORD";
-const CONFIG_URL = `https://api.simplewebrtc.com/config/guest/${API_KEY}`;
+const ROOM_NAME = "mittrom";
+const CONFIG_URL = `https://api.simplewebrtc.com/config/user/${API_KEY}`;
 
 const store = SWRTC.createStore();
 
 export default function VideoApp({ isNormalMode }) {
   const [currentPage, setCurrentPage] = useState(0);
   const { participants, setParticipants } = useContext(ParticipantContext);
+  const [userData, setUserData] = useState(null);
   const { game, setGame } = useContext(GameContext);
   const [totalPages, setTotalPages] = useState(
     isNormalMode
@@ -56,6 +57,20 @@ export default function VideoApp({ isNormalMode }) {
         : Math.ceil(Array.from(participants).length / 4)
     );
   }
+
+  useEffect(() => {
+    if (localStorage.getItem("username")) {
+      const userDataToken = jwt.sign(
+        {
+          id: localStorage.getItem("username"),
+          customerdata: "lol",
+        },
+        "191e4eed-a0fc-4e0a-8bf3-3dbfbbbefb64"
+      );
+      console.log(userDataToken);
+      setUserData(userDataToken);
+    }
+  }, []);
 
   useEffect(() => {
     client.subscribe("/ponggame/#");
@@ -80,9 +95,15 @@ export default function VideoApp({ isNormalMode }) {
     layoutReset();
   }
 
+  function findMatchingPeer(remoteMedia, peers) {
+    return peers.find((elem) => elem.peerAddress == remoteMedia.owner);
+  }
+
+  if (!userData) return null;
+
   return (
     <Provider store={store}>
-      <SWRTC.Provider configUrl={CONFIG_URL}>
+      <SWRTC.Provider configUrl={CONFIG_URL} userData={userData}>
         {/* Render based on the connection state */}
         <SWRTC.Connecting>
           <h1>Connecting...</h1>
@@ -96,8 +117,18 @@ export default function VideoApp({ isNormalMode }) {
           <SWRTC.RemoteAudioPlayer />
 
           {/* Connect to a room with a name and optional password */}
-          <SWRTC.Room name={ROOM_NAME} password={ROOM_PASSWORD}>
+          <SWRTC.Room name={ROOM_NAME}>
             {(props) => {
+              if (!props.room.joined) {
+                return <h1>Joining room...</h1>;
+              }
+              const remoteVideos = props.remoteMedia.filter(
+                (m) => m.kind === "video"
+              );
+              const localVideos = props.localMedia.filter(
+                (m) => m.kind === "video" && m.shared
+              );
+
               if (isNormalMode) {
                 return (
                   <div className="horizontal">
@@ -113,24 +144,35 @@ export default function VideoApp({ isNormalMode }) {
                           <FaAngleLeft />
                         </Button>
                       </div>
-
                       <div className="grid-container-full">
                         {currentPage === totalPages
-                          ? Array.from(participants)
+                          ? [...localVideos, ...remoteVideos]
                               .slice(9 * currentPage)
                               .map((value, index) => (
                                 <div key={index} className="grid-item">
-                                  {value}
+                                  <Video media={value} className="video" />
+
+                                  <span>
+                                    {findMatchingPeer(value, props.peers)
+                                      ?.customerData?.id ||
+                                      localStorage.getItem("username")}
+                                  </span>
                                 </div>
                               ))
-                          : Array.from(participants)
+                          : [...localVideos, ...remoteVideos]
                               .slice(9 * currentPage, 9 + 9 * currentPage)
                               .map((value, index) => (
                                 <div key={index} className="grid-item">
-                                  {value}
+                                  <Video media={value} className="video" />
+                                  <span>
+                                    {findMatchingPeer(value, props.peers)
+                                      ?.customerData?.id ||
+                                      localStorage.getItem("username")}
+                                  </span>
                                 </div>
                               ))}
                       </div>
+
                       <div className="btn">
                         <Button
                           type="button"
@@ -195,18 +237,35 @@ export default function VideoApp({ isNormalMode }) {
 
                       <div className="grid-container-small">
                         {currentPage === totalPages
-                          ? Array.from(participants)
-                              .slice(4 * currentPage)
+                          ? [...localVideos, ...remoteVideos]
+                              .slice(9 * currentPage)
                               .map((value, index) => (
-                                <div key={index} className="grid-item">
-                                  {value}
+                                <div
+                                  key={index}
+                                  className="grid-item game-mode"
+                                >
+                                  <Video media={value} className="video" />
+
+                                  <span>
+                                    {findMatchingPeer(value, props.peers)
+                                      ?.customerData?.id ||
+                                      localStorage.getItem("username")}
+                                  </span>
                                 </div>
                               ))
-                          : Array.from(participants)
-                              .slice(4 * currentPage, 4 + 4 * currentPage)
+                          : [...localVideos, ...remoteVideos]
+                              .slice(9 * currentPage, 9 + 9 * currentPage)
                               .map((value, index) => (
-                                <div key={index} className="grid-item">
-                                  {value}
+                                <div
+                                  key={index}
+                                  className="grid-item game-mode"
+                                >
+                                  <Video media={value} className="video" />
+                                  <span>
+                                    {findMatchingPeer(value, props.peers)
+                                      ?.customerData?.id ||
+                                      localStorage.getItem("username")}
+                                  </span>
                                 </div>
                               ))}
                       </div>

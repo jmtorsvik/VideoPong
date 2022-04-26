@@ -19,7 +19,7 @@
   flex-direction: row;
   justify-content: center;
   align-content: center;
-  background-color: #DBDCDD;
+  background-color: #dbdcdd;
 }
 .control-full {
   width: 40%;
@@ -29,14 +29,20 @@
 
 .grid-container-full {
   display: inline-grid;
-  grid-template-columns: auto auto auto;
+  grid-template-columns: 1fr 1fr 1fr;
   margin: 10px;
   width: 90%;
   height: 90%;
   align-self: center;
   justify-self: center;
 }
-
+.video {
+  width: 100%;
+}
+.game-mode {
+  height: 100%;
+  max-width: 200px;
+}
 .btn {
   align-self: center;
   justify-self: center;
@@ -53,7 +59,7 @@
 }
 
 .pong {
-  background-color: #DBDCDD;
+  background-color: #dbdcdd;
   height: 75vh;
 }
 
