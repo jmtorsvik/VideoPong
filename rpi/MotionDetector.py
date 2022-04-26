@@ -39,8 +39,8 @@ class MotionDetector:
                 continue
             
             diff_frame = cv2.absdiff(back_frame, gray_frame)
-            # Threshold value is currently set to 30. The optimal threshold value may vary from space to space
-            thresh_frame = cv2.threshold(diff_frame, 30, 255, cv2.THRESH_BINARY)[1]
+            # Threshold value is currently set to 100. The optimal threshold value may vary from space to space
+            thresh_frame = cv2.threshold(diff_frame, 100, 255, cv2.THRESH_BINARY)[1]
             thresh_frame = cv2.dilate(thresh_frame, None, iterations = 2)
 
             cnts,_ = cv2.findContours(thresh_frame.copy(), cv2.RETR_EXTERNAL, cv2.CHAIN_APPROX_SIMPLE)
