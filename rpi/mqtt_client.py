@@ -20,12 +20,12 @@ class MQTTClient:
         t = msg.topic
         
         print("on_message(): topic: {}".format(t))
-
+        """
         print(msg.payload)
         pl = json.loads(msg.payload)
         print(pl)
-
-        if pl['office']:
+        """
+        if True:#pl['office']:
             m = None
             pf = "/ponggame/"
             if (t == pf + "start_game"):

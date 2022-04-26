@@ -23,6 +23,7 @@ class MotionDetector:
         mqttc.publish("ponggame/office_start")
 
     def detect(self):
+        print("Started detecting")
         # Motion detection inspired by https://www.geeksforgeeks.org/webcam-motion-detector-python/
         back_frame = None
         video = cv2.VideoCapture(0)
@@ -59,7 +60,8 @@ class MotionDetector:
             # set new background to current frame
             back_frame = gray_frame
 
-        video.release()                    
+        video.release()
+        print("Stopped detecting")                 
       
 motion_detector = MotionDetector()
 
