@@ -111,7 +111,7 @@ t2 = {'trigger': 't',
 t3 = {'trigger': 'motion_detected',
       'source': 'detected',
       'target': 'idle',
-      'effect': 'start_video; stop_timer("t")'
+      'effect': 'start_video'
       }
 
 t4 = {'trigger': 't',
@@ -119,15 +119,26 @@ t4 = {'trigger': 't',
       'target': 'detecting'
       }
 
-t5 = {'trigger': 'stop',
+t5 = {'trigger': 'stopped',
       'source': 'idle',
       'target': 'detecting'
       }
 
-t6 = {'trigger': 'start_video',
+t6 = {'trigger': 'video_started',
       'source': 'detecting',
       'target': 'idle'
       }
+
+t7 = {'trigger': 'video_started',
+      'source': 'wait',
+      'target': 'idle'
+      }
+
+t8 = {'trigger': 'video_started',
+      'source': 'detected',
+      'target': 'idle'
+      }
+
 
 # define states
 detecting = {'name': 'detecting',
@@ -143,7 +154,7 @@ detected = {'name': 'detected',
             }
 
 idle = {'name': 'idle',
-        'entry': 'stop_detecting; test_print("state: IDLE")',
+        'entry': 'stop_detecting; stop_timer("t"); test_print("state: IDLE")',
         'exit': 'start_detecting'
         }
 

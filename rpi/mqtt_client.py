@@ -14,46 +14,54 @@ class MQTTClient:
         self.stm_driver = stm_driver
 
     def on_connect(self, client, userdata, flags, rc):
+        # assert connection establishment
         print("on_connect(): {}".format(mqtt.connack_string(rc)))
 
     def on_message(self, client, userdata, msg):
+        # assert received message on topic t
         t = msg.topic
-        
         print("on_message(): topic: {}".format(t))
-        """
-        print(msg.payload)
-        pl = json.loads(msg.payload)
-        print(pl)
-        """
-        if True:#pl['office']:
+        
+        # extract payload and check if message comes from the office
+        pl = str(msg.payload.decode("utf-8"))
+        office = False
+        try:
+            pl = json.loads(pl)
+            office = pl['office']
+        except:
+            print("payload is not a valid JSON format")
+
+        # creates a stm message based on the topic
+        if office:
             m = None
             pf = "/ponggame/"
             if (t == pf + "start_game"):
-                m = "start_game"
+                m = "game_started"
             elif (t == pf + "new_user"):
-                m = "start_video"
+                m = "video_started"
             elif (t == pf + "cancel"):
-                m = "stop_game"
+                m = "game_stopped"
             elif (t == pf + "exit_video"):
-                m = "stop"
+                m = "stopped"
             
+            # send message to stms
             if (m != None):
                 self.stm_driver.send(m, "stm_status_lamp")
-                if (m == "start_game" or m == "stop"):
+                if (m == "video_started" or m == "stopped"):
                     self.stm_driver.send(m, "stm_motion_detector")
 
     def start(self):
+        # connect client
         print("Connecting to {}:{}".format(broker, port))
         self.client.connect(broker, port)
 
+        # subscribe on topics
         self.client.subscribe("/ponggame/#")
 
+        # start a thread for the mqtt client
         try:
-            # line below should not have the () after the function!
-            # do not know what the comment above is about! ???
             thread = Thread(target=self.client.loop_forever)
             thread.start()
         except KeyboardInterrupt:
             print("Interrupted")
             self.client.disconnect()
-

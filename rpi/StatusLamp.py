@@ -46,27 +46,27 @@ t0 = {'source': 'initial',
       'target': 'idle'
 }
 
-t1 = {'trigger':'start_video',
+t1 = {'trigger':'video_started',
       'source':'idle',
       'target':'in_video',
 }
 
-t2 = {'trigger':'stop', 
+t2 = {'trigger':'stopped', 
       'source':'in_video', 
       'target':'idle', 
 }
 
-t3 = {'trigger':'start_game', 
+t3 = {'trigger':'game_started', 
       'source':'in_video', 
       'target':'in_game', 
 }
 
-t4 = {'trigger':'stop_game', 
+t4 = {'trigger':'game_stopped', 
       'source':'in_game', 
       'target':'in_video', 
 }
 
-t5 = {'trigger':'stop', 
+t5 = {'trigger':'stopped', 
       'source':'in_game', 
       'target':'idle', 
 }
