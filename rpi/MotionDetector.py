@@ -107,11 +107,11 @@ detecting = {'name': 'detecting',
 }
 
 wait = {'name': 'wait',
-    'entry': 'stop_detecting; start_timer("t", 15000)'
+    'entry': 'stop_detecting; start_timer("t", 5000)'
 }
 
 detected = {'name': 'detected',
-    'entry': 'start_detecting; start_timer("t", 15000)'
+    'entry': 'start_detecting; start_timer("t", 5000)'
 }
 
 idle = {'name': 'idle',
