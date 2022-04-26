@@ -28,7 +28,6 @@ class MotionDetector:
         back_frame = None
         video = cv2.VideoCapture(0)
         while (self.running):
-            print("TEST")
             _, frame = video.read()
             detected = False
 
@@ -65,8 +64,8 @@ class MotionDetector:
 
         video.release()
         cv2.destroyAllWindows()
-        print("Stopped detecting")                 
-      
+        print("Stopped detecting")             
+
 motion_detector = MotionDetector()
 
 # define transitions
