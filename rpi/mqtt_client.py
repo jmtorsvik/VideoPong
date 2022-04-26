@@ -1,7 +1,11 @@
 import paho.mqtt.client as mqtt
+import json
 from threading import Thread
 
-class StatusLampMQTTClient:
+# define broker and port
+broker, port = "broker.emqx.io", 8083
+
+class MQTTClient:
     def __init__(self, stm_driver):
         self.count = 0
         self.client = mqtt.Client(transport="websockets")
@@ -17,20 +21,28 @@ class StatusLampMQTTClient:
         
         print("on_message(): topic: {}".format(t))
 
-        m = None
-        pf = "/ponggame/"
-        if (t == pf + "start_game"):
-            m = "start_game"
-        elif (t == pf + "new_user"):
-            m = "start_video"
-        elif (t == pf + "cancel"):
-            m = "stop_game"
-        
-        if (m != None):
-            self.stm_driver.send(m, "stm_status_lamp")
+        print(msg.payload)
+        pl = json.loads(msg.payload)
+        print(pl)
 
-    def start(self, broker, port):
+        if pl['office']:
+            m = None
+            pf = "/ponggame/"
+            if (t == pf + "start_game"):
+                m = "start_game"
+            elif (t == pf + "new_user"):
+                m = "start_video"
+            elif (t == pf + "cancel"):
+                m = "stop_game"
+            elif (t == pf + "exit_video"):
+                m = "stop"
+            
+            if (m != None):
+                self.stm_driver.send(m, "stm_status_lamp")
+                if (m == "start_game" or m == "stop"):
+                    self.stm_driver.send(m, "stm_motion_detector")
 
+    def start(self):
         print("Connecting to {}:{}".format(broker, port))
         self.client.connect(broker, port)
 
@@ -44,3 +56,4 @@ class StatusLampMQTTClient:
         except KeyboardInterrupt:
             print("Interrupted")
             self.client.disconnect()
+
