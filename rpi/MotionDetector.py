@@ -89,7 +89,6 @@ class MotionDetector:
     def test_print(self, txt):
         print(txt)
 
-
 motion_detector = MotionDetector()
 
 # define transitions
@@ -146,15 +145,15 @@ detecting = {'name': 'detecting',
              }
 
 wait = {'name': 'wait',
-        'entry': 'stop_detecting; start_timer("t", 5000); test_print("state: WAIT")'
+        'entry': 'start_timer("t", 15000); stop_detecting; test_print("state: WAIT")'
         }
 
 detected = {'name': 'detected',
-            'entry': 'start_detecting; start_timer("t", 15000); test_print("state: DETECTED")'
+            'entry': 'start_timer("t", 15000); start_detecting; test_print("state: DETECTED")'
             }
 
 idle = {'name': 'idle',
-        'entry': 'stop_detecting; stop_timer("t"); test_print("state: IDLE")',
+        'entry': 'stop_timer("t"); stop_detecting; test_print("state: IDLE")',
         'exit': 'start_detecting'
         }
 
