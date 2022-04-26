@@ -71,6 +71,7 @@ motion_detector = MotionDetector()
 # define transitions
 t0 = {'source': 'initial',
       'target': 'detecting',
+      'effect': 'start_detecting'
 }
 
 t1 = {'trigger':'motion_detected',
@@ -92,7 +93,6 @@ t3 = {'trigger':'motion_detected',
 t4 = {'trigger':'t', 
       'source':'detected', 
       'target':'detecting',
-      'effect': 'stop_detecting'
 }
 
 t5 = {'trigger':'stop', 
@@ -106,9 +106,7 @@ t6 = {'trigger':'start_video',
 }
 
 # define states
-detecting = {'name': 'detecting',
-    'entry': 'start_detecting'
-}
+detecting = {'name': 'detecting'}
 
 wait = {'name': 'wait',
     'entry': 'stop_detecting; start_timer("t", 5000)'
@@ -119,7 +117,8 @@ detected = {'name': 'detected',
 }
 
 idle = {'name': 'idle',
-    'entry': 'stop_detecting'
+    'entry': 'stop_detecting',
+    'exit': 'start_detecting'
 }
 
 # define state machine
