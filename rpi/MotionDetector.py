@@ -60,6 +60,8 @@ class MotionDetector:
             # set new background to current frame
             back_frame = gray_frame
 
+            cv2.imshow("Difference Frame", diff_frame)
+
         video.release()
         print("Stopped detecting")                 
       
