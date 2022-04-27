@@ -30,7 +30,7 @@ class MotionDetector:
         # Motion detection inspired by https://www.geeksforgeeks.org/webcam-motion-detector-python/
         print("Started detecting")
         back_frame = None  # background frame for comparison
-        video = cv2.VideoCapture(0, cv2.CAP_DSHOW)  # openCV video capture
+        video = cv2.VideoCapture(0)#, cv2.CAP_DSHOW)  # openCV video capture
         while (self.running):
             # retrieve current frame
             _, frame = video.read() 
@@ -145,7 +145,7 @@ detecting = {'name': 'detecting',
              }
 
 wait = {'name': 'wait',
-        'entry': 'start_timer("t", 15000); stop_detecting; test_print("state: WAIT")'
+        'entry': 'start_timer("t", 5000); stop_detecting; test_print("state: WAIT")'
         }
 
 detected = {'name': 'detected',
@@ -159,5 +159,5 @@ idle = {'name': 'idle',
 
 # define state machine
 stm_motion_detector = Machine(name='stm_motion_detector', transitions=[
-                              t0, t1, t2, t3, t4, t5, t6], states=[detecting, wait, detected, idle], obj=motion_detector)
+                              t0, t1, t2, t3, t4, t5, t6, t7, t8], states=[detecting, wait, detected, idle], obj=motion_detector)
 motion_detector.stm = stm_motion_detector
