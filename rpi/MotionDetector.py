@@ -4,7 +4,6 @@ from mqtt_client import broker, port
 from stmpy import Machine
 from threading import Thread
 
-
 class MotionDetector:
 
     def __init__(self):
@@ -79,7 +78,10 @@ class MotionDetector:
             back_frame = gray_frame
 
             # display black-white frame
-            cv2.imshow("Difference Frame", diff_frame)
+            try:
+                cv2.imshow("Difference Frame", diff_frame)
+            except:
+                print("Video frame not shown!")
 
         # stop motion detection
         video.release()
