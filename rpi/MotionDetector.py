@@ -51,9 +51,9 @@ class MotionDetector:
                     diff_frame = cv2.absdiff(back_frame, gray_frame)
 
                     # create a black-white frame showing the observed changed
-                    # threshold value is currently set to 60. The most suiting threshold value may vary from space to space
+                    # threshold value is currently set to 100. The most suiting threshold value may vary from space to space
                     thresh_frame = cv2.threshold(
-                        diff_frame, 60, 255, cv2.THRESH_BINARY)[1]
+                        diff_frame, 100, 255, cv2.THRESH_BINARY)[1]
                     thresh_frame = cv2.dilate(thresh_frame, None, iterations=2)
 
                     # find the contours of object in motion
