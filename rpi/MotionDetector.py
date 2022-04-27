@@ -8,11 +8,11 @@ class MotionDetector:
 
     def __init__(self):
         self.running = False
+        Thread(target=self.detect).start()
 
     def start_detecting(self):
         # set running to true and start a detection thread that runs as long as running is true
         self.running = True
-        Thread(target=self.detect).start()
 
     def stop_detecting(self):
         # set running to false which will stop the running detection thread
@@ -26,67 +26,66 @@ class MotionDetector:
         mqttc.publish("ponggame/office_start")
 
     def detect(self):
-        # Motion detection inspired by https://www.geeksforgeeks.org/webcam-motion-detector-python/
-        print("Started detecting")
-        back_frame = None  # background frame for comparison
-        video = cv2.VideoCapture(0)#, cv2.CAP_DSHOW)  # openCV video capture
-        while (self.running):
-            # retrieve current frame
-            _, frame = video.read() 
-            
-            detected = False # boolean indicating observed detection
+        while True:
+            if self.running:
+                # Motion detection inspired by https://www.geeksforgeeks.org/webcam-motion-detector-python/
+                print("Started detecting")
+                back_frame = None  # background frame for comparison
+                video = cv2.VideoCapture(0)#, cv2.CAP_DSHOW)  # openCV video capture
+                while self.running:
+                    # retrieve current frame
+                    _, frame = video.read() 
+                    
+                    detected = False # boolean indicating observed detection
 
-            # create a GaussianBlur image for easier comparison
-            gray_frame = cv2.cvtColor(frame, cv2.COLOR_BGR2GRAY)
-            gray_frame = cv2.GaussianBlur(gray_frame, (21, 21), 0)
+                    # create a GaussianBlur image for easier comparison
+                    gray_frame = cv2.cvtColor(frame, cv2.COLOR_BGR2GRAY)
+                    gray_frame = cv2.GaussianBlur(gray_frame, (21, 21), 0)
 
-            # set initial background frame
-            if back_frame is None:
-                back_frame = gray_frame
-                continue
-            
-            # compare current frame with background frame
-            diff_frame = cv2.absdiff(back_frame, gray_frame)
+                    # set initial background frame
+                    if back_frame is None:
+                        back_frame = gray_frame
+                        continue
+                    
+                    # compare current frame with background frame
+                    diff_frame = cv2.absdiff(back_frame, gray_frame)
 
-            # create a black-white frame showing the observed changed
-            # threshold value is currently set to 60. The most suiting threshold value may vary from space to space
-            thresh_frame = cv2.threshold(
-                diff_frame, 60, 255, cv2.THRESH_BINARY)[1]
-            thresh_frame = cv2.dilate(thresh_frame, None, iterations=2)
+                    # create a black-white frame showing the observed changed
+                    # threshold value is currently set to 60. The most suiting threshold value may vary from space to space
+                    thresh_frame = cv2.threshold(
+                        diff_frame, 60, 255, cv2.THRESH_BINARY)[1]
+                    thresh_frame = cv2.dilate(thresh_frame, None, iterations=2)
 
-            # find the contours of object in motion
-            cnts, _ = cv2.findContours(
-                thresh_frame.copy(), cv2.RETR_EXTERNAL, cv2.CHAIN_APPROX_SIMPLE)
-            
-            # search for observed change in contours
-            for contour in cnts:
-                if cv2.contourArea(contour) < 10000:
-                    continue
-                detected = True
+                    # find the contours of object in motion
+                    cnts, _ = cv2.findContours(
+                        thresh_frame.copy(), cv2.RETR_EXTERNAL, cv2.CHAIN_APPROX_SIMPLE)
+                    
+                    # search for observed change in contours
+                    for contour in cnts:
+                        if cv2.contourArea(contour) < 10000:
+                            continue
+                        detected = True
 
-            # alert detected motion
-            if (detected):
-                print("Motion detected!")
-                self.stm.send("motion_detected")
+                    # alert detected motion
+                    if detected:
+                        print("Motion detected!")
+                        self.stm.send("motion_detected")
 
-            # end motion detection if 'q' is entered on keyboard
-            key = cv2.waitKey(1)
-            if key == ord('q'):
-                break
+                    # end motion detection if 'q' is entered on keyboard
+                    key = cv2.waitKey(1)
+                    if key == ord('q'):
+                        break
 
-            # set new background frame to current frame
-            back_frame = gray_frame
+                    # set new background frame to current frame
+                    back_frame = gray_frame
 
-            # display black-white frame
-            try:
-                cv2.imshow("Difference Frame", diff_frame)
-            except:
-                print("Video frame not shown!")
+                    # display black-white frame
+                    cv2.imshow("Difference Frame", diff_frame)
 
-        # stop motion detection
-        video.release()
-        cv2.destroyAllWindows()
-        print("Stopped detecting")
+                # stop motion detection
+                video.release()
+                cv2.destroyAllWindows()
+                print("Stopped detecting")
 
     def test_print(self, txt):
         print(txt)
