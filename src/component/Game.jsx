@@ -30,46 +30,48 @@ export function Game() {
       client.subscribe(`/ponggame/${gameName}/#`, function (err, done) {
         if (err) {
         }
-      client.on("message", (topic, message, packet) => {
-        let parsed_message;
-        try {
-          parsed_message = JSON.parse(message.toString());
-        } catch (err) {
-        }
+        client.on("message", (topic, message, packet) => {
+          let parsed_message;
+          try {
+            parsed_message = JSON.parse(message.toString());
+          } catch (err) {}
 
-        if (parsed_message) {
-          // eslint-disable-next-line default-case
-          if (topic === `/ponggame/${gameName}/goal`) {
-            if (parsed_message.username !== localStorage.getItem("username")) {
-              ball.dy = 0;
-              ball.dx = 0;
-              ball.x = (ref.current.width - ball.size) / 2;
-              ball.y = (ref.current.height - ball.size) / 2;
-              rightPlayer.score = parsed_message.score;
+          if (parsed_message) {
+            // eslint-disable-next-line default-case
+            if (topic === `/ponggame/${gameName}/goal`) {
+              if (
+                parsed_message.username !== localStorage.getItem("username")
+              ) {
+                ball.dy = 0;
+                ball.dx = 0;
+                ball.x = (ref.current.width - ball.size) / 2;
+                ball.y = (ref.current.height - ball.size) / 2;
+                rightPlayer.score = parsed_message.score;
+              }
+              setTimeout(() => {
+                resetBall(
+                  ref.current,
+                  parsed_message.username === localStorage.getItem("username")
+                );
+                globalGame.pending = null;
+              }, new Date() - new Date(parsed_message.timestamp));
             }
-            setTimeout(() => {
-              resetBall(
-                ref.current,
-                parsed_message.username === localStorage.getItem("username")
-              );
-              globalGame.pending = null;
-            }, new Date() - new Date(parsed_message.timestamp));
-          }
-          if (
-            parsed_message.username !== localStorage.getItem("username") &&
-            !globalGame.pending
-          ) {
-            switch (topic) {
-              case `/ponggame/${gameName}/balldeflect`:
-                break;
-              case `/ponggame/${gameName}/playerspeed`:
-                leftPlayer.y = parsed_message.y;
-                break;
-              default:
-                return;
+            if (
+              parsed_message.username !== localStorage.getItem("username") &&
+              !globalGame.pending
+            ) {
+              switch (topic) {
+                case `/ponggame/${gameName}/balldeflect`:
+                  break;
+                case `/ponggame/${gameName}/playerspeed`:
+                  leftPlayer.y = parsed_message.y;
+                  break;
+                default:
+                  return;
+              }
             }
           }
-        }
+        });
       });
     }
   }, []);
