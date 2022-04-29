@@ -1,5 +1,5 @@
-export const canvasWidth = window.innerWidth; // or: document.getElementById('root').clientWidth/2;
-export const canvasHeight = window.innerHeight - 250;
+export const canvasWidth = 1000; // or: document.getElementById('root').clientWidth/2;
+export const canvasHeight = 700;
 export const grid = canvasWidth / 50; // used as a granual size unit
 export const playerSpeed = (grid / 100) * 45;
 export const scoreSize = grid * 10;

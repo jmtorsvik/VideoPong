@@ -16,8 +16,6 @@ export function move(canvas, gameName) {
   const maxX = canvas.width - rightPlayer.width;
   const maxY = canvas.height - grid;
 
-  // move players by their velocity
-  leftPlayer.y += leftPlayer.dy;
   rightPlayer.y += rightPlayer.dy;
 
   // prevent players from going through walls
@@ -51,15 +49,16 @@ export function move(canvas, gameName) {
     if (ball.y > rightPlayer.y && ball.y < rightPlayer.y + rightPlayer.height) {
       ball.x = maxX - ball.size;
       ball.dx = -ball.dx;
-      // TO-DO: SEND MQTT MESSAGE ABOUT BALL HIT!
-      client.publish(
-        "/ponggame/" + gameName + "/balldeflect",
-        JSON.stringify({
-          ball: { dx: -ball.dx, dy: ball.dy },
-          barY: rightPlayer.y,
-          username: localStorage.getItem("username"),
-        })
-      );
+      if (!globalGame.pending) {
+        client.publish(
+          "/ponggame/" + gameName + "/balldeflect",
+          JSON.stringify({
+            ball: { dx: -ball.dx, dy: ball.dy },
+            barY: rightPlayer.y,
+            username: localStorage.getItem("username"),
+          })
+        );
+      }
     } else {
       //resetBall(canvas, true);
       ball.dy = 0;
@@ -150,10 +149,8 @@ export function addKeyListeners(gameName) {
   document.addEventListener("keydown", function (e) {
     if (e.key === "ArrowUp") {
       rightPlayer.dy = -playerSpeed;
-      publishSpeed(gameName);
     } else if (e.key === "ArrowDown") {
       rightPlayer.dy = playerSpeed;
-      publishSpeed(gameName);
     }
   });
 
@@ -170,12 +167,17 @@ export function addKeyListeners(gameName) {
 }
 
 function publishSpeed(gameName) {
+  console.log("PUBLIS");
   client.publish(
     "/ponggame/" + gameName + "/playerspeed",
     JSON.stringify({
       dy: rightPlayer.dy,
+      y: rightPlayer.y,
       username: localStorage.getItem("username"),
-    })
+    }),
+    {
+      qos: 2,
+    }
   );
 }
 

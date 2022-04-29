@@ -67,7 +67,6 @@ export default function VideoApp({ isNormalMode }) {
         },
         "191e4eed-a0fc-4e0a-8bf3-3dbfbbbefb64"
       );
-      console.log(userDataToken);
       setUserData(userDataToken);
     }
   }, []);
