@@ -10,7 +10,6 @@ function Participant({ participantName }) {
 
   function startGame() {
     try {
-      console.log("HALLA");
       const now = new Date();
       now.setSeconds(now.getSeconds() + 1);
       client.publish(
@@ -20,9 +19,7 @@ function Participant({ participantName }) {
           timestamp: now,
         })
       );
-    } catch (err) {
-      console.log(err);
-    }
+    } catch (err) {}
   }
 
   return (

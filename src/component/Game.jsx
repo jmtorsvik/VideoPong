@@ -29,22 +29,17 @@ export function Game() {
       const gameName = `${initiator}${opponent}`;
       client.subscribe(`/ponggame/${gameName}/#`, function (err, done) {
         if (err) {
-          console.log(err);
         }
-        console.log(`SUBSCRIBING TO: /ponggame/${gameName}`);
-      });
       client.on("message", (topic, message, packet) => {
         let parsed_message;
         try {
           parsed_message = JSON.parse(message.toString());
         } catch (err) {
-          console.log("NOE_GIKK_GALT");
         }
 
         if (parsed_message) {
           // eslint-disable-next-line default-case
           if (topic === `/ponggame/${gameName}/goal`) {
-            console.log("RAN!");
             if (parsed_message.username !== localStorage.getItem("username")) {
               ball.dy = 0;
               ball.dx = 0;
@@ -60,12 +55,15 @@ export function Game() {
               globalGame.pending = null;
             }, new Date() - new Date(parsed_message.timestamp));
           }
-          if (parsed_message.username !== localStorage.getItem("username")) {
+          if (
+            parsed_message.username !== localStorage.getItem("username") &&
+            !globalGame.pending
+          ) {
             switch (topic) {
               case `/ponggame/${gameName}/balldeflect`:
                 break;
               case `/ponggame/${gameName}/playerspeed`:
-                leftPlayer.dy = parsed_message.dy;
+                leftPlayer.y = parsed_message.y;
                 break;
               default:
                 return;

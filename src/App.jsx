@@ -33,7 +33,6 @@ export default function App() {
     client.on("connect", function () {
       client.subscribe("/ponggame/#");
       client.on("message", (topic, message, packet) => {
-        console.log(message.toString());
         if (topic === "/ponggame/new_user") {
           const { username } = JSON.parse(message);
           const old_participants = participants;
@@ -41,8 +40,6 @@ export default function App() {
           setParticipants(old_participants);
         } else if (topic === "/ponggame/cancel") {
           const { opponent, initiator } = JSON.parse(message);
-          console.log(opponent);
-          console.log(initiator);
           if (
             opponent === localStorage.getItem("username") ||
             initiator === localStorage.getItem("username")
