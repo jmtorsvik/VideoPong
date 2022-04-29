@@ -86,11 +86,8 @@
 }
 
 .participants-view {
-  height: 50vh;
+  height: 75vh;
   border: 1px solid rgba(0, 0, 0, 0.8);
+  margin: 16px 0;
 }
 
-.video-me {
-  height: 25vh;
-  border: 1px solid rgba(0, 0, 0, 0.8);
-}

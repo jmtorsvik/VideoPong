@@ -44,7 +44,7 @@ export default function VideoApp({ isNormalMode }) {
   const [userData, setUserData] = useState(null);
   const { game, setGame } = useContext(GameContext);
   const [totalPages, setTotalPages] = useState(
-    isNormalMode
+    Array.from(participants).length === 0 ? 1 : isNormalMode
       ? Math.ceil(Array.from(participants).length / 9)
       : Math.ceil(Array.from(participants).length / 4)
   );
@@ -184,11 +184,6 @@ export default function VideoApp({ isNormalMode }) {
                       </div>
                     </div>
                     <div className="control-full">
-                      <div className="btn">
-                        <Button type="button" className="btn btn-primary">
-                          Play game
-                        </Button>
-                      </div>
                       <div className="overflow-auto participants-view">
                         {Array.from(participants).map((value, index) => (
                           <Participant key={index} participantName={value} />
@@ -211,7 +206,6 @@ export default function VideoApp({ isNormalMode }) {
                           </Button>
                         </div>
                       </div>
-                      <div className="video-me">...</div>
                     </div>
                   </div>
                 );
