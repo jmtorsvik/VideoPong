@@ -95,7 +95,9 @@ export default function VideoApp({ isNormalMode }) {
   }
 
   function findMatchingPeer(remoteMedia, peers) {
-    return peers.find((elem) => elem.peerAddress == remoteMedia.owner);
+    console.log(remoteMedia);
+    console.log(peers);
+    return peers.find((elem) => elem.peerAddress === remoteMedia.owner);
   }
 
   if (!userData) return null;
