@@ -52,11 +52,17 @@ export default function VideoApp({ isNormalMode }) {
   function layoutReset() {
     setCurrentPage(0);
     setTotalPages(
-      !isNormalMode
+      Array.from(participants).length === 0 ? 1 : isNormalMode
         ? Math.ceil(Array.from(participants).length / 9)
-        : Math.ceil(Array.from(participants).length / 4)
-    );
+        : Math.ceil(Array.from(participants).length / 4));
   }
+
+  useEffect(() => {
+    setTotalPages(
+      Array.from(participants).length === 0 ? 1 : isNormalMode
+        ? Math.ceil(Array.from(participants).length / 9)
+        : Math.ceil(Array.from(participants).length / 4))
+  }, [participants]);
 
   useEffect(() => {
     if (localStorage.getItem("username")) {
@@ -256,11 +262,6 @@ export default function VideoApp({ isNormalMode }) {
                                   className="grid-item game-mode"
                                 >
                                   <Video media={value} className="video" />
-                                  <span>
-                                    {findMatchingPeer(value, props.peers)
-                                      ?.customerData?.id ||
-                                      localStorage.getItem("username")}
-                                  </span>
                                 </div>
                               ))}
                       </div>
