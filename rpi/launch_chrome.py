@@ -12,6 +12,7 @@ class MQTTClient:
         self.client = mqtt.Client(transport="websockets")
         self.client.on_connect = self.on_connect
         self.client.on_message = self.on_message
+        self.is_active = False
         print("STARTED")
 
     def on_connect(self, client, userdata, flags, rc):
@@ -23,11 +24,14 @@ class MQTTClient:
         t = msg.topic
         print("on_message(): topic: {}".format(t))
         
-        if(t == "/ponggame/start_game"):
+        
+        if(t == "/ponggame/new_user" and not self.is_active):
+            self.is_active = True
             chrome_options = webdriver.ChromeOptions(); 
             chrome_options.add_experimental_option("excludeSwitches", ['enable-automation']);
+            chrome_options.add_argument("use-fake-device-for-media-stream"); 
             driver = webdriver.Chrome(options=chrome_options);  
-            driver.get('https://google.com')
+            driver.get('http://localhost:3000?office=true')
             driver.fullscreen_window()
 
 
@@ -48,12 +52,7 @@ class MQTTClient:
             self.client.disconnect()
 
 
-#client = MQTTClient()
-#client.start()
-chrome_options = webdriver.ChromeOptions(); 
-chrome_options.add_experimental_option("excludeSwitches", ['enable-automation']);
-driver = webdriver.Chrome(options=chrome_options);  
-driver.get('https://google.com')
-driver.fullscreen_window()
+client = MQTTClient()
+client.start()
     
 
