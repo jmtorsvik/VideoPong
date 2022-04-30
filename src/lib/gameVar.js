@@ -26,6 +26,8 @@ export let globalGame = {
 export let leftPlayer = {
   x: 0,
   y: (canvasHeight - playerHeight) / 2,
+  actual_pos: (canvasHeight - playerHeight) / 2,
+  dir: "up",
   width: playerWidth,
   height: playerHeight,
   dy: 0,

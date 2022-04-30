@@ -128,13 +128,49 @@ export function draw(canvas) {
   context.fillRect(ball.x, ball.y, ball.size, ball.size);
 
   // draw player bars
-  // left player
-  context.fillRect(
-    leftPlayer.x,
-    leftPlayer.y,
-    leftPlayer.width,
-    leftPlayer.height
-  );
+  // left playerx
+  console.log("SET: " + leftPlayer.y);
+  console.log("REPORTED: " + leftPlayer.actual_pos);
+  console.log(leftPlayer.y !== leftPlayer.actual_pos);
+
+  if (leftPlayer.actual_pos !== leftPlayer.y) {
+    if (
+      leftPlayer.dir === "up" &&
+      Math.floor(leftPlayer.actual_pos) > Math.floor(leftPlayer.y)
+    ) {
+      context.fillRect(
+        leftPlayer.x,
+        (leftPlayer.y += 10),
+        leftPlayer.width,
+        leftPlayer.height
+      );
+    } else if (
+      leftPlayer.dir === "down" &&
+      Math.floor(leftPlayer.actual_pos) < Math.floor(leftPlayer.y)
+    ) {
+      context.fillRect(
+        leftPlayer.x,
+        (leftPlayer.y -= 10),
+        leftPlayer.width,
+        leftPlayer.height
+      );
+    } else {
+      context.fillRect(
+        leftPlayer.x,
+        leftPlayer.y,
+        leftPlayer.width,
+        leftPlayer.height
+      );
+    }
+  } else {
+    context.fillRect(
+      leftPlayer.x,
+      leftPlayer.y,
+      leftPlayer.width,
+      leftPlayer.height
+    );
+  }
+
   // right player
   context.fillRect(
     rightPlayer.x,
@@ -167,7 +203,6 @@ export function addKeyListeners(gameName) {
 }
 
 function publishSpeed(gameName) {
-  console.log("PUBLIS");
   client.publish(
     "/ponggame/" + gameName + "/playerspeed",
     JSON.stringify({

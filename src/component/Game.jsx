@@ -56,15 +56,20 @@ export function Game() {
                 globalGame.pending = null;
               }, new Date() - new Date(parsed_message.timestamp));
             }
-            if (
-              parsed_message.username !== localStorage.getItem("username") &&
-              !globalGame.pending
-            ) {
+            if (parsed_message.username !== localStorage.getItem("username")) {
               switch (topic) {
                 case `/ponggame/${gameName}/balldeflect`:
                   break;
                 case `/ponggame/${gameName}/playerspeed`:
-                  leftPlayer.y = parsed_message.y;
+                  if (parsed_message.y >= leftPlayer.y) {
+                    // Upwards
+                    leftPlayer.dir = "up";
+                  } else if (leftPlayer) {
+                    // Downwards
+                    leftPlayer.dir = "down";
+                  }
+                  leftPlayer.actual_pos = parsed_message.y;
+
                   break;
                 default:
                   return;

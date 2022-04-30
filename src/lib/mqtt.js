@@ -1,5 +1,5 @@
 const mqtt = require("mqtt");
-const client = mqtt.connect("ws://broker.emqx.io:8083/mqtt", {
+const client = mqtt.connect("ws://localhost:8080", {
   keepalive: 60,
 });
 
