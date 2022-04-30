@@ -24,7 +24,9 @@ class MQTTClient:
         print("on_message(): topic: {}".format(t))
         
         if(t == "/ponggame/start_game"):
-            driver = webdriver.Chrome()
+            chrome_options = webdriver.ChromeOptions(); 
+            chrome_options.add_experimental_option("excludeSwitches", ['enable-automation']);
+            driver = webdriver.Chrome(options=chrome_options);  
             driver.get('https://google.com')
             driver.fullscreen_window()
 
@@ -46,7 +48,12 @@ class MQTTClient:
             self.client.disconnect()
 
 
-client = MQTTClient()
-client.start()
+#client = MQTTClient()
+#client.start()
+chrome_options = webdriver.ChromeOptions(); 
+chrome_options.add_experimental_option("excludeSwitches", ['enable-automation']);
+driver = webdriver.Chrome(options=chrome_options);  
+driver.get('https://google.com')
+driver.fullscreen_window()
     
 
