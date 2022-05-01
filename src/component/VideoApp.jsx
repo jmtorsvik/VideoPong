@@ -76,8 +76,11 @@ export default function VideoApp({ isNormalMode }) {
     if (localStorage.getItem("username")) {
       const userDataToken = jwt.sign(
         {
-          id: localStorage.getItem("username"),
-          customerdata: "lol",
+          id: Math.random()
+            .toString(36)
+            .replace(/[^a-z]+/g, "")
+            .substr(0, 5),
+          username: localStorage.getItem("username"),
         },
         "191e4eed-a0fc-4e0a-8bf3-3dbfbbbefb64"
       );
@@ -169,7 +172,7 @@ export default function VideoApp({ isNormalMode }) {
 
                                   <span>
                                     {findMatchingPeer(value, props.peers)
-                                      ?.customerData?.id ||
+                                      ?.customerData?.username ||
                                       localStorage.getItem("username")}
                                   </span>
                                 </div>
@@ -181,7 +184,7 @@ export default function VideoApp({ isNormalMode }) {
                                   <Video media={value} className="video" />
                                   <span>
                                     {findMatchingPeer(value, props.peers)
-                                      ?.customerData?.id ||
+                                      ?.customerData?.username ||
                                       localStorage.getItem("username")}
                                   </span>
                                 </div>
@@ -257,7 +260,7 @@ export default function VideoApp({ isNormalMode }) {
 
                                   <span>
                                     {findMatchingPeer(value, props.peers)
-                                      ?.customerData?.id ||
+                                      ?.customerData?.username ||
                                       localStorage.getItem("username")}
                                   </span>
                                 </div>
