@@ -1,5 +1,5 @@
 const mqtt = require("mqtt");
-const client = mqtt.connect("ws://localhost:8080", {
+const client = mqtt.connect("ws://mqtt.henriksen.cloud", {
   keepalive: 60,
 });
 
