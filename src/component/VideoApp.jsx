@@ -44,7 +44,9 @@ export default function VideoApp({ isNormalMode }) {
   const [userData, setUserData] = useState(null);
   const { game, setGame } = useContext(GameContext);
   const [totalPages, setTotalPages] = useState(
-    Array.from(participants).length === 0 ? 1 : isNormalMode
+    Array.from(participants).length === 0
+      ? 1
+      : isNormalMode
       ? Math.ceil(Array.from(participants).length / 9)
       : Math.ceil(Array.from(participants).length / 4)
   );
@@ -52,16 +54,22 @@ export default function VideoApp({ isNormalMode }) {
   function layoutReset() {
     setCurrentPage(0);
     setTotalPages(
-      Array.from(participants).length === 0 ? 1 : isNormalMode
+      Array.from(participants).length === 0
+        ? 1
+        : isNormalMode
         ? Math.ceil(Array.from(participants).length / 9)
-        : Math.ceil(Array.from(participants).length / 4));
+        : Math.ceil(Array.from(participants).length / 4)
+    );
   }
 
   useEffect(() => {
     setTotalPages(
-      Array.from(participants).length === 0 ? 1 : isNormalMode
+      Array.from(participants).length === 0
+        ? 1
+        : isNormalMode
         ? Math.ceil(Array.from(participants).length / 9)
-        : Math.ceil(Array.from(participants).length / 4))
+        : Math.ceil(Array.from(participants).length / 4)
+    );
   }, [participants]);
 
   useEffect(() => {
