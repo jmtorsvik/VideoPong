@@ -14,8 +14,10 @@ spec:
           port: 80
     - kind: Rule
       match: Host(`mqtt.henriksen.cloud`)
+      useWebsockets: true
       services:
         - name: mosquitto
           port: 8080
+
   tls:
     certResolver: myresolver
