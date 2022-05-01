@@ -17,5 +17,10 @@ spec:
       services:
         - name: mosquitto
           port: 1883
+    - kind: Rule
+      match: Host(`mqtt.henriksen.cloud`)
+      services:
+        - name: mosquitto
+          port: 8080
   tls:
     certResolver: myresolver
