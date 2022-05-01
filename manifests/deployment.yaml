@@ -1,0 +1,25 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: videopong
+  namespace: videopong
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: videopong
+  template:
+    metadata:
+      labels:
+        app: videopong
+    spec:
+      containers:
+        - name: videopong
+          resources:
+            limits:
+              memory: 2Gi
+            requests:
+              memory: 1Gi
+          image: legalit.azurecr.io/legalis.no
+          ports:
+            - containerPort: 80

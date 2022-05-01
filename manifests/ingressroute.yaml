@@ -1,0 +1,16 @@
+apiVersion: traefik.containo.us/v1alpha1
+kind: IngressRoute
+metadata:
+  name: videopong
+  namespace: videopong
+spec:
+  entryPoints:
+    - websecure
+  routes:
+    - kind: Rule
+      match: Host(`videopong.henriksen.cloud`)
+      services:
+        - name: videopng
+          port: 80
+  tls:
+    certResolver: myresolver
