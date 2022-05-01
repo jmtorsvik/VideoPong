@@ -20,8 +20,12 @@ export default function App() {
   useEffect(() => {
     const interval = setInterval(() => {
       const username = localStorage.getItem("username");
+      const office = localStorage.getItem("office");
       if (username) {
-        client.publish("/ponggame/new_user", JSON.stringify({ username }));
+        client.publish(
+          "/ponggame/new_user",
+          JSON.stringify({ username, office: office === "true" ? true : false })
+        );
       }
     }, 4000);
     return () => {

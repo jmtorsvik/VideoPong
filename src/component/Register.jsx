@@ -11,6 +11,13 @@ function Register() {
 
   function onSubmitPress() {
     localStorage.setItem("username", input);
+    const queryString = window.location.search;
+    const urlParams = new URLSearchParams(queryString);
+    const office = urlParams.get("office");
+    if (office) {
+      localStorage.setItem("office", "true");
+    }
+
     setIsRegistered(input);
   }
 
