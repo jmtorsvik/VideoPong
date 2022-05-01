@@ -15,7 +15,7 @@ spec:
     - kind: Rule
       match: Host(`mqtt.henriksen.cloud`)
       services:
-        - name: videopong
+        - name: mosquitto
           port: 1883
   tls:
     certResolver: myresolver
