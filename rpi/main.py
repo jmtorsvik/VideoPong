@@ -2,10 +2,11 @@ from stmpy import Driver
 from mqtt_client import MQTTClient
 #from StatusLamp import stm_status_lamp
 from MotionDetector import stm_motion_detector
+from StatusLamp import stm_status_lamp
 
 # define driver with added state machines
 driver = Driver()
-#driver.add_machine(stm_status_lamp)
+driver.add_machine(stm_status_lamp)
 driver.add_machine(stm_motion_detector)
 
 # define mqtt client with added driver
