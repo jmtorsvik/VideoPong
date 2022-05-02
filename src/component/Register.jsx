@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import "./css/register.css";
 import { Button, Form } from "react-bootstrap";
 import client from "../lib/mqtt";
@@ -19,16 +19,26 @@ function Register() {
       localStorage.setItem("office", "true");
       localStorage.setItem(
         "username",
-        "Kontor " + Math.floor(Math.random() * directions.length)
+        "Kontor " + directions[Math.floor(Math.random() * directions.length)]
       );
       setIsRegistered(
-        "Kontor " + Math.floor(Math.random() * directions.length)
+        "Kontor " + directions[Math.floor(Math.random() * directions.length)]
       );
     } else {
       localStorage.setItem("username", input);
       setIsRegistered(input);
     }
   }
+
+  useEffect(() => {
+    const queryString = window.location.search;
+
+    const urlParams = new URLSearchParams(queryString);
+    const office = urlParams.get("office");
+    if (office) {
+      onSubmitPress();
+    }
+  }, []);
 
   if (!isRegistered) {
     return (
