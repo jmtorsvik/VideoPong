@@ -9,7 +9,7 @@ class MQTTClient:
     def __init__(self, stm_driver):
         self.count = 0
         self.client = mqtt.Client(transport="websockets")
-        self.client.username_pw_set("rJGaDmyOGwpZKzb0m4ILX5nqEmE6Kha1RGZkQlWlHb8hy96J1EkNzw12GvYeBW5i", "aeNg8aibai0oiloo7xiad1iaju1uch")
+        self.client.username_pw_set("rJGaDmyOGwpZKzb0m4ILX5nqEmE6Kha1RGZkQlWlHb8hy96J1EkNzw12GvYeBW5i", "")
 
         self.client.on_connect = self.on_connect
         self.client.on_message = self.on_message
