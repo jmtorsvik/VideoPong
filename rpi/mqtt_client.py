@@ -3,7 +3,7 @@ import json
 from threading import Thread
 
 # define broker and port
-broker, port = "mqtt.flespi.io", 443
+broker, port = "wss://mqtt.flespi.io", 443
 
 class MQTTClient:
     def __init__(self, stm_driver):
