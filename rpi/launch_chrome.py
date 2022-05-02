@@ -4,12 +4,14 @@ import json
 from threading import Thread
 
 # define broker and port
-broker, port = "localhost", 8080
+broker, port = "mqtt.flespi.io", 443
 
 class MQTTClient:
     def __init__(self):
         self.count = 0
         self.client = mqtt.Client(transport="websockets")
+        self.client.username_pw_set("rJGaDmyOGwpZKzb0m4ILX5nqEmE6Kha1RGZkQlWlHb8hy96J1EkNzw12GvYeBW5i", "")
+        self.client.tls_set()
         self.client.on_connect = self.on_connect
         self.client.on_message = self.on_message
         self.is_active = False
@@ -28,11 +30,12 @@ class MQTTClient:
         if(t == "/ponggame/new_user" and not self.is_active):
             self.is_active = True
             chrome_options = webdriver.ChromeOptions(); 
+            chrome_options.add_experimental_option("detach", True)
             chrome_options.add_experimental_option("excludeSwitches", ['enable-automation']);
-            chrome_options.add_argument("use-fake-device-for-media-stream"); 
             driver = webdriver.Chrome(options=chrome_options);  
-            driver.get('http://localhost:3000?office=true')
+            driver.get('https://videopong.henriksen.cloud?office=true')
             driver.fullscreen_window()
+          
 
 
     def start(self):

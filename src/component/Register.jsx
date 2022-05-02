@@ -3,6 +3,8 @@ import "./css/register.css";
 import { Button, Form } from "react-bootstrap";
 import client from "../lib/mqtt";
 
+const directions = ["Nord", "Sør", "Vest", "Øst"];
+
 function Register() {
   const [input, setInput] = useState("");
   const [isRegistered, setIsRegistered] = useState(
@@ -10,15 +12,22 @@ function Register() {
   );
 
   function onSubmitPress() {
-    localStorage.setItem("username", input);
     const queryString = window.location.search;
     const urlParams = new URLSearchParams(queryString);
     const office = urlParams.get("office");
     if (office) {
       localStorage.setItem("office", "true");
+      localStorage.setItem(
+        "username",
+        "Kontor " + Math.floor(Math.random() * directions.length)
+      );
+      setIsRegistered(
+        "Kontor " + Math.floor(Math.random() * directions.length)
+      );
+    } else {
+      localStorage.setItem("username", input);
+      setIsRegistered(input);
     }
-
-    setIsRegistered(input);
   }
 
   if (!isRegistered) {

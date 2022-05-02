@@ -88,6 +88,17 @@ export default function VideoApp({ isNormalMode }) {
     }
   }, []);
 
+  function leave() {
+    client.publish(
+      "/ponggame/user_leave",
+      JSON.stringify({ username: localStorage.getItem("username") })
+    );
+    setTimeout(() => {
+      localStorage.removeItem("username");
+      window.location.href = "/";
+    }, 3000);
+  }
+
   useEffect(() => {
     client.subscribe("/ponggame/#");
     client.on("message", (topic, message, packet) => {
@@ -146,6 +157,9 @@ export default function VideoApp({ isNormalMode }) {
               const localVideos = props.localMedia.filter(
                 (m) => m.kind === "video" && m.shared
               );
+              console.log(remoteVideos);
+              console.log(localVideos);
+              console.log(props.peers);
 
               if (isNormalMode) {
                 return (
@@ -171,9 +185,10 @@ export default function VideoApp({ isNormalMode }) {
                                   <Video media={value} className="video" />
 
                                   <span>
-                                    {findMatchingPeer(value, props.peers)
-                                      ?.customerData?.username ||
-                                      localStorage.getItem("username")}
+                                    {index === 0
+                                      ? localStorage.getItem("username")
+                                      : props.peers[index]?.customerData
+                                          ?.username}
                                   </span>
                                 </div>
                               ))
@@ -183,9 +198,10 @@ export default function VideoApp({ isNormalMode }) {
                                 <div key={index} className="grid-item">
                                   <Video media={value} className="video" />
                                   <span>
-                                    {findMatchingPeer(value, props.peers)
-                                      ?.customerData?.username ||
-                                      localStorage.getItem("username")}
+                                    {index === 0
+                                      ? localStorage.getItem("username")
+                                      : props.peers[index]?.customerData
+                                          ?.username}
                                   </span>
                                 </div>
                               ))}
@@ -220,7 +236,11 @@ export default function VideoApp({ isNormalMode }) {
                           </Button>
                         </div>
                         <div className="btn">
-                          <Button type="button" className="btn btn-danger">
+                          <Button
+                            type="button"
+                            className="btn btn-danger"
+                            onClick={() => leave()}
+                          >
                             Leave room
                           </Button>
                         </div>
@@ -259,9 +279,10 @@ export default function VideoApp({ isNormalMode }) {
                                   <Video media={value} className="video" />
 
                                   <span>
-                                    {findMatchingPeer(value, props.peers)
-                                      ?.customerData?.username ||
-                                      localStorage.getItem("username")}
+                                    {index === 0
+                                      ? localStorage.getItem("username")
+                                      : props.peers[index]?.customerData
+                                          ?.username}
                                   </span>
                                 </div>
                               ))

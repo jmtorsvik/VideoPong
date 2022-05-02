@@ -50,6 +50,11 @@ export default function App() {
           ) {
             setGame(null);
           }
+        } else if (topic === "/ponggame/user_leave") {
+          const { username } = JSON.parse(message);
+          const old_participants = participants;
+          old_participants.delete(username);
+          setParticipants(old_participants);
         }
       });
     });
