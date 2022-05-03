@@ -26,6 +26,8 @@ class MotionDetector:
         mqttc.publish("ponggame/office_start")
 
     def detect(self):
+        # had to make an infinite loop in a single thread  as the rpi 
+        # didn't let us open a new camera instance in a new thread twice in a runtime
         while True:
             if self.running:
                 # Motion detection inspired by https://www.geeksforgeeks.org/webcam-motion-detector-python/
