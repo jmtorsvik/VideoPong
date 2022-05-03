@@ -1,6 +1,5 @@
 from stmpy import Driver
 from mqtt_client import MQTTClient
-#from StatusLamp import stm_status_lamp
 from MotionDetector import stm_motion_detector
 from StatusLamp import stm_status_lamp
 
