@@ -19,7 +19,7 @@ class MotionDetector:
         self.running = False
 
     def start_video(self):
-        # send an mqtt message that starts an instance of the video chat on the office ocmputer
+        # send an mqtt message that starts an instance of the video chat on the office computer
         print("Video chat started")
         mqttc = Client(transport="websockets")
         mqttc.connect(broker, port)
@@ -150,7 +150,7 @@ detecting = {'name': 'detecting',
              }
 
 wait = {'name': 'wait',
-        'entry': 'start_timer("t", 5000); stop_detecting; test_print("state: WAIT")'
+        'entry': 'start_timer("t", 15000); stop_detecting; test_print("state: WAIT")'
         }
 
 detected = {'name': 'detected',
