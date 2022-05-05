@@ -41,7 +41,7 @@ class MQTTClient:
                 m = "game_started"
             elif (t == pf + "new_user"):
                 m = "video_started"
-            elif (t == pf + "cancel"):
+            elif (t == pf + "+/cancel"):
                 m = "game_stopped"
             elif (t == pf + "user_leave"):
                 m = "stopped"
