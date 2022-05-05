@@ -12,11 +12,14 @@ function Participant({ participantName }) {
     try {
       const now = new Date();
       now.setSeconds(now.getSeconds() + 1);
+      const isOffice = localStorage.getItem("office") === "true" || false
+
       client.publish(
         "/ponggame/start_game",
         JSON.stringify({
           participants: [localStorage.getItem("username"), participantName],
           timestamp: now,
+          office: isOffice
         })
       );
     } catch (err) {}

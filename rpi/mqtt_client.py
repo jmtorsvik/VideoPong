@@ -43,7 +43,7 @@ class MQTTClient:
                 m = "video_started"
             elif (t == pf + "cancel"):
                 m = "game_stopped"
-            elif (t == pf + "exit_video"):
+            elif (t == pf + "user_leave"):
                 m = "stopped"
             
             # send message to stms

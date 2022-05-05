@@ -89,9 +89,10 @@ export default function VideoApp({ isNormalMode }) {
   }, []);
 
   function leave() {
+    const isOffice = localStorage.getItem("office") === "true" || false
     client.publish(
       "/ponggame/user_leave",
-      JSON.stringify({ username: localStorage.getItem("username") })
+      JSON.stringify({ username: localStorage.getItem("username"), office: isOffice })
     );
     setTimeout(() => {
       localStorage.removeItem("username");
@@ -118,7 +119,9 @@ export default function VideoApp({ isNormalMode }) {
   }, []);
 
   function cancelGame() {
-    client.publish("/ponggame/cancel", JSON.stringify(game));
+    const isOffice = localStorage.getItem("office") === "true" || false
+
+    client.publish("/ponggame/cancel", JSON.stringify({...game, ...{office: isOffice}}));
     layoutReset();
   }
 

@@ -23,7 +23,9 @@ class MotionDetector:
         print("Video chat started")
         mqttc = Client(transport="websockets")
         mqttc.connect(broker, port)
-        mqttc.publish("ponggame/office_start")
+        mqttc.username_pw_set("rJGaDmyOGwpZKzb0m4ILX5nqEmE6Kha1RGZkQlWlHb8hy96J1EkNzw12GvYeBW5i", "")
+        mqttc.tls_set()
+        mqttc.publish("/ponggame/office_start")
 
     def detect(self):
         # had to make an infinite loop in a single thread  as the rpi 

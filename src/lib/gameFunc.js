@@ -12,6 +12,8 @@ import {
 import client from "./mqtt";
 
 export function move(canvas, gameName) {
+  const isOffice = localStorage.getItem("office") === "true" || false
+
   // set boundaries
   const maxX = canvas.width - rightPlayer.width;
   const maxY = canvas.height - grid;
@@ -56,6 +58,7 @@ export function move(canvas, gameName) {
             ball: { dx: -ball.dx, dy: ball.dy },
             barY: rightPlayer.y,
             username: localStorage.getItem("username"),
+            office: isOffice
           })
         );
       }
@@ -76,6 +79,7 @@ export function move(canvas, gameName) {
             score: leftPlayer.score,
             username: localStorage.getItem("username"),
             timestamp: now,
+            office: isOffice
           })
         );
       }
@@ -203,6 +207,7 @@ export function addKeyListeners(gameName) {
 }
 
 function publishSpeed(gameName) {
+
   client.publish(
     "/ponggame/" + gameName + "/playerspeed",
     JSON.stringify({

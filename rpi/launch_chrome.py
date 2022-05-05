@@ -27,7 +27,7 @@ class MQTTClient:
         print("on_message(): topic: {}".format(t))
         
         
-        if(t == "/ponggame/new_user" and not self.is_active):
+        if(t == "/ponggame/office_start" and not self.is_active):
             self.is_active = True
             chrome_options = webdriver.ChromeOptions(); 
             chrome_options.add_experimental_option("detach", True)
