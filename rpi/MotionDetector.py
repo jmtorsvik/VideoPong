@@ -150,7 +150,7 @@ detecting = {'name': 'detecting',
              }
 
 wait = {'name': 'wait',
-        'entry': 'start_timer("t", 15000); stop_detecting; test_print("state: WAIT")'
+        'entry': 'start_timer("t", 5000); stop_detecting; test_print("state: WAIT")'
         }
 
 detected = {'name': 'detected',
